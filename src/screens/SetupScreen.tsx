@@ -2,6 +2,10 @@
 import React, { ChangeEvent, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
+const generateRandomString = () => {
+  return (Math.random() + 1).toString(36).substring(7)
+}
+
 export const SetupScreen = () => {
   const [size, setSize] = useState(0)
   const [roomUrl, setRoomUrl] = useState<string>()
@@ -12,7 +16,8 @@ export const SetupScreen = () => {
   }
 
   const handleClick = () => {
-    setRoomUrl(`${location.protocol}//${location.host}/room?id=100&size=${size}`)
+    const roomId = generateRandomString()
+    setRoomUrl(`${location.protocol}//${location.host}/room?id=${roomId}&size=${size}`)
   }
 
   return (
