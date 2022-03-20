@@ -20,6 +20,10 @@ export const vote = async (roomId: string, userId: string, point: number) => {
   }
 }
 
-export const cancelVote = () => {}
+export const cancelVote = (roomId: string, userId: string) => {
+  console.log(roomId, userId)
+}
 
-export const resetAllVotes = () => {}
+export const resetAllVotes = (roomId: string) => {
+  console.log(roomId)
+}

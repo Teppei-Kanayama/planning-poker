@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { vote } from '../firebase/firebase'
+import { cancelVote, resetAllVotes, vote } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 const getUserId = () => {
@@ -18,10 +18,8 @@ const getUserId = () => {
 
 export const VotingScreen = () => {
   const [searchParams] = useSearchParams()
-
   const roomId = searchParams.get('id')
   const roomSize = searchParams.get('size')
-  const userId = getUserId()
 
   if (roomId == null || roomSize == null) {
     return (
@@ -31,15 +29,33 @@ export const VotingScreen = () => {
     )
   }
 
+  const userId = getUserId()
+
+  const onClickResetAllVotes = async () => {
+    await resetAllVotes(roomId)
+  }
+
+  const onClickVote = async () => {
+    await vote(roomId, userId, 3)
+  }
+
+  const onClickCancelVote = async () => {
+    await cancelVote(roomId, userId)
+  }
+
   return (
     <>
+      <button onClick={onClickResetAllVotes}>
+          全員の投票をリセット
+      </button>
       <h1>
         { `あなたのuserIdは${userId}、roomIdは${roomId}、roomSizeは${roomSize}です` }
       </h1>
-      <button onClick={async () => {
-        await vote(roomId, userId, 3)
-      }}>
-          送信
+      <button onClick={onClickVote}>
+          投票
+      </button>
+      <button onClick={onClickCancelVote}>
+          投票取り下げ
       </button>
     </>
   )
