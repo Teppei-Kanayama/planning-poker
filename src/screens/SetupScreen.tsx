@@ -1,10 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { ChangeEvent, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
-const generateRandomString = () => {
-  return (Math.random() + 1).toString(36).substring(7)
-}
+import { v4 as uuidv4 } from 'uuid'
 
 export const SetupScreen = () => {
   const [size, setSize] = useState(0)
@@ -16,7 +13,7 @@ export const SetupScreen = () => {
   }
 
   const handleClick = () => {
-    const roomId = generateRandomString()
+    const roomId = uuidv4()
     setRoomUrl(`${location.protocol}//${location.host}/room?id=${roomId}&size=${size}`)
   }
 
