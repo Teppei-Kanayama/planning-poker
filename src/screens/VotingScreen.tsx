@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom'
 import { addVote, countVotes, deleteAllVotes, findVote } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
+const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
+
 const getUserId = () => {
   let userId: string
   const storedUserId = localStorage.getItem('userId')
@@ -22,7 +24,21 @@ const VoteCard = ({ point, onClick }: {point: number, onClick: (p: number) => vo
   )
 }
 
-const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
+const VoteCards = ({ points, onClick }: {points: number[], onClick: (p: number) => void}) => {
+  return (
+    <>
+    {points.map((i) => {
+      return (
+      <VoteCard
+        key={i}
+        point={i}
+        onClick={onClick}
+      />
+      )
+    })}
+  </>
+  )
+}
 
 const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   const [point, setPoint] = useState<number>()
@@ -37,11 +53,7 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
     setExistingPoint()
   }, [])
 
-  const onClickResetAllVotes = async () => {
-    await deleteAllVotes(roomId)
-  }
-
-  const onClickVote = async () => {
+  const onClickVoteButton = async () => {
     if (point != null) {
       await addVote(roomId, userId, point)
     }
@@ -56,19 +68,25 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
       <h1>
         { `あなたのuserIdは${userId}、roomIdは${roomId}、pointは${point}です` }
       </h1>
-      {
-        fibonacci.map((i) => {
-          return (
-            <VoteCard
-              key={i}
-              point={i}
-              onClick={onClickVoteCard}
-            />
-          )
-        })
-      }
+      <VoteCards points={fibonacci} onClick={onClickVoteCard} />
       <br />
-      <button onClick={onClickVote} disabled={point == null}>
+      <button onClick={onClickVoteButton} disabled={point == null}>
+          投票
+      </button>
+    </>
+  )
+}
+
+const Voted = ({ roomId }: {roomId: string}) => {
+  const onClickResetAllVotes = async () => {
+    await deleteAllVotes(roomId)
+  }
+
+  return (
+    <>
+      <VoteCards points={fibonacci} onClick={() => {}} />
+      <br />
+      <button onClick={() => {}} disabled={true}>
           投票
       </button>
       <button onClick={onClickResetAllVotes}>
@@ -76,10 +94,6 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
       </button>
     </>
   )
-}
-
-const Voted = () => {
-  return <></>
 }
 
 export const VotingScreen = () => {
@@ -111,6 +125,8 @@ export const VotingScreen = () => {
   })
 
   return (
-    isActive ? <Voting roomId={roomId} userId={userId} /> : <Voted />
+    isActive
+      ? <Voting roomId={roomId} userId={userId} />
+      : <Voted roomId={roomId} />
   )
 }
