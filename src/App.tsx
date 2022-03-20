@@ -1,10 +1,17 @@
 /* eslint-disable no-use-before-define */
 import React from 'react'
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useSearchParams } from 'react-router-dom'
 import { vote } from './firebase/firebase'
 
 const VotingScreen = () => {
+  const [searchParams] = useSearchParams()
+
+  const roomId = searchParams.get('id')
+  console.log(roomId)
+  const roomSize = searchParams.get('size')
+  console.log(roomSize)
+
   return (
     <div className="App">
       <h1>
