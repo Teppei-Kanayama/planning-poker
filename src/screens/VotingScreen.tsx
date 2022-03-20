@@ -78,13 +78,17 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   )
 }
 
+const Voted = () => {
+  return <></>
+}
+
 export const VotingScreen = () => {
-  // const [isActive, setIsActive] = useState(true)
+  const [isActive, setIsActive] = useState(true)
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
-  const roomSize = searchParams.get('size')
+  const roomSizeString = searchParams.get('size')
 
-  if (roomId == null || roomSize == null) {
+  if (roomId == null || roomSizeString == null || isNaN(parseInt(roomSizeString))) {
     return (
       <h1>
         URLが不正です。roomIdとroomSizeを指定してください。
@@ -97,10 +101,16 @@ export const VotingScreen = () => {
   useEffect(() => {
     const judgeIsActive = async () => {
       const nVotes = await countVotes(roomId)
-      console.log(nVotes)
+      if (nVotes >= parseInt(roomSizeString)) {
+        setIsActive(false)
+      } else if (nVotes === 0) {
+        setIsActive(true)
+      }
     }
     judgeIsActive()
   })
 
-  return <Voting roomId={roomId} userId={userId} />
+  return (
+    isActive ? <Voting roomId={roomId} userId={userId} /> : <Voted />
+  )
 }
