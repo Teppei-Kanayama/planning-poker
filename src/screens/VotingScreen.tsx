@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addVote, countVotes, deleteAllVotes, findVote } from '../firebase/firebase'
+import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
@@ -78,6 +78,16 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
 }
 
 const Voted = ({ roomId }: {roomId: string}) => {
+  const [points, setPoints] = useState<number[]>([])
+
+  useEffect(() => {
+    const setAllPoints = async () => {
+      const allPoints = await fetchAllPoints(roomId)
+      setPoints(allPoints)
+    }
+    setAllPoints()
+  }, [])
+
   const onClickResetAllVotes = async () => {
     await deleteAllVotes(roomId)
   }
@@ -89,6 +99,9 @@ const Voted = ({ roomId }: {roomId: string}) => {
       <button onClick={() => {}} disabled={true}>
           投票
       </button>
+      <br />
+      <VoteCards points={points} onClick={() => {}} />
+      <br />
       <button onClick={onClickResetAllVotes}>
           全員の投票をリセット
       </button>

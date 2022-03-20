@@ -41,6 +41,14 @@ export const countVotes = async (roomId: string) => {
   return count
 }
 
+export const fetchAllPoints = async (roomId: string) => {
+  const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
+  const querySnapshot = await getDocs(ref)
+  const points: number[] = []
+  querySnapshot.forEach((doc) => { points.push(doc.data().point) })
+  return points
+}
+
 export const deleteAllVotes = async (roomId: string) => {
   const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
   const querySnapshot = await getDocs(ref)
