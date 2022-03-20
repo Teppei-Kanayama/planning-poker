@@ -21,7 +21,7 @@ export const vote = async (roomId: string, userId: string, point: number) => {
 }
 
 export const cancelVote = async (roomId: string, userId: string) => {
-  const ref = query(collection(db, 'points'), where('userId', '==', userId))
+  const ref = query(collection(db, 'points'), where('userId', '==', userId), where('roomId', '==', roomId))
   const querySnapshot = await getDocs(ref)
   querySnapshot.forEach(
     (doc) => {
