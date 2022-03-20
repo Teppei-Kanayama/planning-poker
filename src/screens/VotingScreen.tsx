@@ -1,44 +1,9 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../firebase/firebase'
-import { v4 as uuidv4 } from 'uuid'
-
-const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
-
-const getUserId = () => {
-  let userId: string
-  const storedUserId = localStorage.getItem('userId')
-  if (storedUserId == null) {
-    userId = uuidv4()
-    localStorage.setItem('userId', userId)
-  } else {
-    userId = storedUserId
-  }
-  return userId
-}
-
-const VoteCard = ({ point, onClick }: {point: number, onClick: (p: number) => void}) => {
-  return (
-    <button onClick={() => { onClick(point) }}>{point}</button>
-  )
-}
-
-const VoteCards = ({ points, onClick }: {points: number[], onClick: (p: number) => void}) => {
-  return (
-    <>
-    {points.map((i) => {
-      return (
-      <VoteCard
-        key={i}
-        point={i}
-        onClick={onClick}
-      />
-      )
-    })}
-  </>
-  )
-}
+import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../data/firebase'
+import { FibonacciCards, VoteCards } from '../components/Cards'
+import { getUserId } from '../data/localStorage'
 
 const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   const [point, setPoint] = useState<number>()
@@ -68,7 +33,7 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
       <h1>
         { `あなたのuserIdは${userId}、roomIdは${roomId}、pointは${point}です` }
       </h1>
-      <VoteCards points={fibonacci} onClick={onClickVoteCard} />
+      <FibonacciCards onClick={onClickVoteCard} />
       <br />
       <button onClick={onClickVoteButton} disabled={point == null}>
           投票
@@ -94,7 +59,7 @@ const Voted = ({ roomId }: {roomId: string}) => {
 
   return (
     <>
-      <VoteCards points={fibonacci} onClick={() => {}} />
+      <FibonacciCards onClick={() => {}} />
       <br />
       <button onClick={() => {}} disabled={true}>
           投票
