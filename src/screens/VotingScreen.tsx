@@ -9,16 +9,24 @@ export const VotingScreen = () => {
   const roomId = searchParams.get('id')
   const roomSize = searchParams.get('size')
 
+  if (roomId == null || roomSize == null) {
+    return (
+      <h1>
+        URLが不正です。roomIdとroomSizeを指定してください。
+      </h1>
+    )
+  }
+
   return (
-    <div className="App">
+    <>
       <h1>
         { `あなたのroomIdは${roomId}、roomSizeは${roomSize}です` }
       </h1>
       <button onClick={async () => {
-        await vote()
+        await vote(roomId, 3)
       }}>
           送信
       </button>
-    </div>
+    </>
   )
 }
