@@ -45,7 +45,9 @@ export const VotingScreen = () => {
   }
 
   const onClickVote = async () => {
-    await addVote(roomId, userId, 3)
+    if (point != null) {
+      await addVote(roomId, userId, point)
+    }
   }
 
   const onClickCancelVote = async () => {
@@ -76,7 +78,7 @@ export const VotingScreen = () => {
         })
       }
       <br />
-      <button onClick={onClickVote}>
+      <button onClick={onClickVote} disabled={point == null}>
           投票
       </button>
       <button onClick={onClickCancelVote}>
