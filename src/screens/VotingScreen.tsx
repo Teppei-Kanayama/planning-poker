@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addVote, deleteVote, deleteAllVotes, findVote } from '../firebase/firebase'
+import { addVote, deleteAllVotes, findVote } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 const getUserId = () => {
@@ -60,19 +60,12 @@ export const VotingScreen = () => {
     }
   }
 
-  const onClickCancelVote = async () => {
-    await deleteVote(roomId, userId)
-  }
-
   const onClickVoteCard = (p: number) => {
     setPoint(p)
   }
 
   return (
     <>
-      <button onClick={onClickResetAllVotes}>
-          全員の投票をリセット
-      </button>
       <h1>
         { `あなたのuserIdは${userId}、roomIdは${roomId}、roomSizeは${roomSize}です、pointは${point}です` }
       </h1>
@@ -91,8 +84,8 @@ export const VotingScreen = () => {
       <button onClick={onClickVote} disabled={point == null}>
           投票
       </button>
-      <button onClick={onClickCancelVote}>
-          投票取り下げ
+      <button onClick={onClickResetAllVotes}>
+          全員の投票をリセット
       </button>
     </>
   )
