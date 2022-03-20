@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { ChangeEvent, useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 export const SetupScreen = () => {
   const [size, setSize] = useState(0)
@@ -20,6 +21,7 @@ export const SetupScreen = () => {
       <label>
         参加人数:
         <input type="number" name="name" onChange={handleChange} />
+        人
       </label>
 
       <button onClick={handleClick}>作成する</button>
@@ -28,9 +30,10 @@ export const SetupScreen = () => {
         roomUrl && (
           <>
             <br />
-            <>{roomUrl}</>
+            作成されました！
             <br />
-            <a href={roomUrl} target="_blank" rel="noreferrer">部屋に移動する</a>
+            <a href={roomUrl} target="_blank" rel="noreferrer">{roomUrl}</a>
+            <CopyToClipboard text={roomUrl}><button>クリップボードにコピー</button></CopyToClipboard>
           </>
         )
       }
