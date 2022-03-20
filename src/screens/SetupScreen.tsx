@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 export const SetupScreen = () => {
   const [size, setSize] = useState(0)
   const [roomUrl, setRoomUrl] = useState<string>()
+  const [copied, setCopied] = useState(false)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSize(parseInt(event.target.value))
@@ -33,7 +34,16 @@ export const SetupScreen = () => {
             作成されました！
             <br />
             <a href={roomUrl} target="_blank" rel="noreferrer">{roomUrl}</a>
-            <CopyToClipboard text={roomUrl}><button>クリップボードにコピー</button></CopyToClipboard>
+            <CopyToClipboard text={roomUrl} onCopy={() => { setCopied(true) }}>
+              <button>クリップボードにコピー</button>
+            </CopyToClipboard>
+            {
+              copied && (
+                <>
+                  コピーされました！
+                </>
+              )
+            }
           </>
         )
       }
