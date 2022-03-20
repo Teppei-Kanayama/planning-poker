@@ -37,7 +37,7 @@ export const VotingScreen = () => {
         { `あなたのuserIdは${userId}、roomIdは${roomId}、roomSizeは${roomSize}です` }
       </h1>
       <button onClick={async () => {
-        await vote(roomId, 3)
+        await vote(roomId, userId, 3)
       }}>
           送信
       </button>

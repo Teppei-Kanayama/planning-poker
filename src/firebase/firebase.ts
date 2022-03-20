@@ -7,13 +7,13 @@ initializeApp(firebaseKeys)
 
 const db = getFirestore()
 
-export const vote = async (roomId: string, point: number) => {
+export const vote = async (roomId: string, userId: string, point: number) => {
   try {
-    const docRef = await addDoc(collection(db, 'points'), {
+    await addDoc(collection(db, 'points'), {
       roomId: roomId,
+      userId: userId,
       point: point
     })
-    console.log('Document written with ID: ', docRef.id)
   } catch (e) {
     // TODO: エラーハンドリング
     console.error('Error adding document: ', e)
