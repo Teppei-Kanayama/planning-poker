@@ -1,12 +1,17 @@
 /* eslint-disable no-use-before-define */
 import React from 'react'
 import './App.css'
+import { vote } from './firebase/firebase'
 
 function App () {
   return (
     <div className="App">
       <h1>
-        TODO: ここにプランニングポーカーを実装する
+        <button onClick={async () => {
+          await vote()
+        }}>
+          送信
+        </button>
       </h1>
     </div>
   )
