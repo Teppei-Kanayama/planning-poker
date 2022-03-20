@@ -7,19 +7,18 @@ export const VotingScreen = () => {
   const [searchParams] = useSearchParams()
 
   const roomId = searchParams.get('id')
-  console.log(roomId)
   const roomSize = searchParams.get('size')
-  console.log(roomSize)
 
   return (
     <div className="App">
       <h1>
-        <button onClick={async () => {
-          await vote()
-        }}>
-          送信
-        </button>
+        { `あなたのroomIdは${roomId}、roomSizeは${roomSize}です` }
       </h1>
+      <button onClick={async () => {
+        await vote()
+      }}>
+          送信
+      </button>
     </div>
   )
 }

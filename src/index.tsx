@@ -2,19 +2,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { SetupScreen } from './screens/SetupScreen'
-import { VotingScreen } from './screens/VotingScreen'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
 
 ReactDOM.render(
   <BrowserRouter>
-    <Link to="/create-new-room">Invoices</Link>
-    <Link to="/room">Expenses</Link>
-    <Routes>
-      <Route path="/create-new-room" element={<SetupScreen />} />
-      <Route path="/room" element={<VotingScreen />} />
-      <Route path="/" element={<SetupScreen />} />
-    </Routes>
+    <App />
   </BrowserRouter>,
   document.getElementById('root')
 )
