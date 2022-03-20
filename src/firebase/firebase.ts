@@ -7,7 +7,7 @@ initializeApp(firebaseKeys)
 
 const db = getFirestore()
 
-export const vote = async (roomId: string, userId: string, point: number) => {
+export const addVote = async (roomId: string, userId: string, point: number) => {
   try {
     await addDoc(collection(db, 'points'), {
       roomId: roomId,
@@ -20,7 +20,7 @@ export const vote = async (roomId: string, userId: string, point: number) => {
   }
 }
 
-export const cancelVote = async (roomId: string, userId: string) => {
+export const deleteVote = async (roomId: string, userId: string) => {
   const ref = query(collection(db, 'points'), where('userId', '==', userId), where('roomId', '==', roomId))
   const querySnapshot = await getDocs(ref)
   querySnapshot.forEach(
@@ -30,6 +30,12 @@ export const cancelVote = async (roomId: string, userId: string) => {
   )
 }
 
-export const resetAllVotes = (roomId: string) => {
-  console.log(roomId)
+export const deleteAllVotes = async (roomId: string) => {
+  const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
+  const querySnapshot = await getDocs(ref)
+  querySnapshot.forEach(
+    (doc) => {
+      deleteDoc(doc.ref)
+    }
+  )
 }

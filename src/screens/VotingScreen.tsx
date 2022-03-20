@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { cancelVote, resetAllVotes, vote } from '../firebase/firebase'
+import { addVote, deleteVote, deleteAllVotes } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 const getUserId = () => {
@@ -32,15 +32,15 @@ export const VotingScreen = () => {
   const userId = getUserId()
 
   const onClickResetAllVotes = async () => {
-    await resetAllVotes(roomId)
+    await deleteAllVotes(roomId)
   }
 
   const onClickVote = async () => {
-    await vote(roomId, userId, 3)
+    await addVote(roomId, userId, 3)
   }
 
   const onClickCancelVote = async () => {
-    await cancelVote(roomId, userId)
+    await deleteVote(roomId, userId)
   }
 
   return (
