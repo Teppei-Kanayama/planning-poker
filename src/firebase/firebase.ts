@@ -1,6 +1,6 @@
 // Initialize Cloud Firestore through Firebase
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc } from 'firebase/firestore'
 import { firebaseKeys } from './constants'
 
 initializeApp(firebaseKeys)
@@ -20,8 +20,14 @@ export const vote = async (roomId: string, userId: string, point: number) => {
   }
 }
 
-export const cancelVote = (roomId: string, userId: string) => {
-  console.log(roomId, userId)
+export const cancelVote = async (roomId: string, userId: string) => {
+  const ref = query(collection(db, 'points'), where('userId', '==', userId))
+  const querySnapshot = await getDocs(ref)
+  querySnapshot.forEach(
+    (doc) => {
+      deleteDoc(doc.ref)
+    }
+  )
 }
 
 export const resetAllVotes = (roomId: string) => {
