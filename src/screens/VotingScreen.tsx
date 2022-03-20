@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addVote, deleteVote, deleteAllVotes } from '../firebase/firebase'
+import { addVote, deleteVote, deleteAllVotes, findVote } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 const getUserId = () => {
@@ -25,7 +25,6 @@ const VoteCard = ({ point, onClick }: {point: number, onClick: (p: number) => vo
 const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
 
 export const VotingScreen = () => {
-  const [point, setPoint] = useState<number>()
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSize = searchParams.get('size')
@@ -39,6 +38,17 @@ export const VotingScreen = () => {
   }
 
   const userId = getUserId()
+  const [point, setPoint] = useState<number>()
+
+  useEffect(() => {
+    const setExistingPoint = async () => {
+      const vote = await findVote(roomId, userId)
+      if (vote != null) {
+        setPoint(vote.point)
+      }
+    }
+    setExistingPoint()
+  }, [])
 
   const onClickResetAllVotes = async () => {
     await deleteAllVotes(roomId)
