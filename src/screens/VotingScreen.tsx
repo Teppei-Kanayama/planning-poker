@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addVote, deleteAllVotes, findVote } from '../firebase/firebase'
+import { addVote, countVotes, deleteAllVotes, findVote } from '../firebase/firebase'
 import { v4 as uuidv4 } from 'uuid'
 
 const getUserId = () => {
@@ -24,20 +24,7 @@ const VoteCard = ({ point, onClick }: {point: number, onClick: (p: number) => vo
 
 const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
 
-export const VotingScreen = () => {
-  const [searchParams] = useSearchParams()
-  const roomId = searchParams.get('id')
-  const roomSize = searchParams.get('size')
-
-  if (roomId == null || roomSize == null) {
-    return (
-      <h1>
-        URLが不正です。roomIdとroomSizeを指定してください。
-      </h1>
-    )
-  }
-
-  const userId = getUserId()
+const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   const [point, setPoint] = useState<number>()
 
   useEffect(() => {
@@ -67,7 +54,7 @@ export const VotingScreen = () => {
   return (
     <>
       <h1>
-        { `あなたのuserIdは${userId}、roomIdは${roomId}、roomSizeは${roomSize}です、pointは${point}です` }
+        { `あなたのuserIdは${userId}、roomIdは${roomId}、pointは${point}です` }
       </h1>
       {
         fibonacci.map((i) => {
@@ -89,4 +76,31 @@ export const VotingScreen = () => {
       </button>
     </>
   )
+}
+
+export const VotingScreen = () => {
+  // const [isActive, setIsActive] = useState(true)
+  const [searchParams] = useSearchParams()
+  const roomId = searchParams.get('id')
+  const roomSize = searchParams.get('size')
+
+  if (roomId == null || roomSize == null) {
+    return (
+      <h1>
+        URLが不正です。roomIdとroomSizeを指定してください。
+      </h1>
+    )
+  }
+
+  const userId = getUserId()
+
+  useEffect(() => {
+    const judgeIsActive = async () => {
+      const nVotes = await countVotes(roomId)
+      console.log(nVotes)
+    }
+    judgeIsActive()
+  })
+
+  return <Voting roomId={roomId} userId={userId} />
 }

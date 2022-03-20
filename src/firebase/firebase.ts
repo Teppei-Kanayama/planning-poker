@@ -33,6 +33,14 @@ export const addVote = async (roomId: string, userId: string, point: number) => 
   }
 }
 
+export const countVotes = async (roomId: string) => {
+  const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
+  const querySnapshot = await getDocs(ref)
+  let count = 0
+  querySnapshot.forEach(() => { count += 1 })
+  return count
+}
+
 export const deleteAllVotes = async (roomId: string) => {
   const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
   const querySnapshot = await getDocs(ref)
