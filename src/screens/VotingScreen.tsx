@@ -9,7 +9,7 @@ import { ResetButton, VoteButton } from '../components/Button'
 type Status = 'voting' | 'voted' | 'closed'
 
 // 自分が投票したポイントを管理するカスタムフック
-const useHasVoted = (roomId: string, userId: string) => {
+const useMyPoint = (roomId: string, userId: string) => {
   const [myPoint, setMyPoint] = useState<number>()
 
   useEffect(() => {
@@ -47,11 +47,11 @@ const Voting = ({ onClickVoteButton }
   )
 }
 
-const Voted = ({ roomSize, myPoint }: {roomSize: number, myPoint: number | undefined}) => {
+const Voted = ({ roomSize, myPoint, nVotes }: {roomSize: number, myPoint: number | undefined, nVotes: number}) => {
   return (
   <>
     <p>
-    { `他の人が投票を終えるまでお待ちください（${roomSize}/${roomSize}名投票済み）` }
+    { `他の人が投票を終えるまでお待ちください（${nVotes}/${roomSize}名投票済み）` }
     </p>
     <p>
     { `私の投票は${myPoint}ポイントです` }
@@ -104,7 +104,7 @@ export const VotingScreen = () => {
   if (roomId == null || roomSizeString == null || isNaN(parseInt(roomSizeString))) {
     return (
       <h1>
-        URLが不正です。roomIdとroomSizeを指定してください。
+        URLが不正です。有効なroomIdとroomSizeを指定してください。
       </h1>
     )
   }
@@ -112,7 +112,8 @@ export const VotingScreen = () => {
   const roomSize = parseInt(roomSizeString)
   const userId = getUserId()
 
-  const [myPoint, setMyPoint] = useHasVoted(roomId, userId)
+  const [myPoint, setMyPoint] = useMyPoint(roomId, userId)
+  const [nVotes, setNVotes] = useState(0)
 
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
@@ -123,10 +124,11 @@ export const VotingScreen = () => {
   }
 
   const updateStatus = async () => {
-    const nVotes = await countVotes(roomId)
-    if (nVotes >= roomSize) {
+    const _nVotes = await countVotes(roomId)
+    setNVotes(_nVotes)
+    if (_nVotes >= roomSize) {
       setStatus('closed')
-    } else if (nVotes === 0) {
+    } else if (_nVotes === 0) {
       setStatus('voting')
     } else if (myPoint != null) {
       setStatus('voted')
@@ -145,7 +147,7 @@ export const VotingScreen = () => {
   }
 
   if (status === 'voted') {
-    return <Voted roomSize={roomSize} myPoint={myPoint}/>
+    return <Voted roomSize={roomSize} myPoint={myPoint} nVotes={nVotes}/>
   }
 
   return <Closed roomId={roomId} myPoint={myPoint}/>
