@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { MdHowToVote } from 'react-icons/md'
+import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
@@ -49,13 +49,11 @@ const Voting = ({ onClickVoteButton }
 const Voted = ({ roomSize, myPoint, nVotes }: {roomSize: number, myPoint: number | undefined, nVotes: number}) => {
   return (
   <>
-    <p>
-    { `他の人が投票を終えるまでお待ちください（${nVotes}/${roomSize}名投票済み）` }
+    <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
+        <MdCoffee /> 他の人が投票を終えるまでお待ちください（{nVotes}人/{roomSize}人 投票済み）
     </p>
     <FibonacciCards disabled myPoint={myPoint}/>
-    <br />
     <VoteButton disabled />
-    <ResetButton disabled/>
   </>)
 }
 
