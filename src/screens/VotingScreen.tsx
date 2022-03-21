@@ -8,8 +8,7 @@ import { ResetButton, VoteButton } from '../components/Button'
 
 type Status = 'voting' | 'voted' | 'closed'
 
-const Voting = ({ roomId, userId, onClickVoteButton }
-  : {roomId: string, userId: string, onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
+const usePoint = (roomId: string, userId: string) => {
   const [point, setPoint] = useState<number>()
 
   useEffect(() => {
@@ -22,18 +21,25 @@ const Voting = ({ roomId, userId, onClickVoteButton }
     setExistingPoint()
   }, [])
 
+  return point
+}
+
+const Voting = ({ roomId, userId, onClickVoteButton }
+  : {roomId: string, userId: string, onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
+  const [temporaryPoint, setTemporaryPoint] = useState<number>()
+
   const onClickVoteCard = (p: number) => {
-    setPoint(p)
+    setTemporaryPoint(p)
   }
 
   return (
     <>
-      <h1>
-        { `pointは${point}です` }
-      </h1>
+      <p>
+        { `投票してください（現在選択中のpointは${temporaryPoint}です）` }
+      </p>
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
-      <VoteButton onClick={() => { onClickVoteButton(point) }} disabled={point == null}/>
+      <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
       <br />
       <ResetButton disabled/>
     </>
@@ -88,6 +94,8 @@ export const VotingScreen = () => {
 
   const userId = getUserId()
 
+  const votedPoint = usePoint(roomId, userId)
+
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
       await addVote(roomId, userId, point)
@@ -101,6 +109,8 @@ export const VotingScreen = () => {
       setStatus('closed')
     } else if (nVotes === 0) {
       setStatus('voting')
+    } else if (votedPoint != null) {
+      setStatus('voted')
     }
   }
 
