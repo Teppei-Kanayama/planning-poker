@@ -38,6 +38,9 @@ const Voting = ({ onClickVoteButton }
       <p>
         { `投票してください（現在選択中のpointは${temporaryPoint}です）` }
       </p>
+      <p>
+      { `現在の選択は${temporaryPoint}ポイントです` }
+      </p>
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
       <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
@@ -81,6 +84,9 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
 
   return (
     <>
+      <p>
+        投票結果を確認しましょう
+      </p>
       <p>
         { `私の投票は${myPoint}ポイントです` }
       </p>
