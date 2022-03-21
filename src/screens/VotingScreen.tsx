@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+
 import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { getUserId } from '../data/localStorage'
@@ -41,6 +42,7 @@ const Voting = ({ onClickVoteButton }
       <p>
       { `現在の選択は${temporaryPoint}ポイントです` }
       </p>
+      <br />
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
       <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
