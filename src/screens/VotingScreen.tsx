@@ -8,7 +8,8 @@ import { ResetButton, VoteButton } from '../components/Button'
 
 type Status = 'voting' | 'voted' | 'closed'
 
-const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
+const Voting = ({ roomId, userId, onClickVoteButton }
+  : {roomId: string, userId: string, onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
   const [point, setPoint] = useState<number>()
 
   useEffect(() => {
@@ -21,12 +22,6 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
     setExistingPoint()
   }, [])
 
-  const onClickVoteButton = async () => {
-    if (point != null) {
-      await addVote(roomId, userId, point)
-    }
-  }
-
   const onClickVoteCard = (p: number) => {
     setPoint(p)
   }
@@ -38,7 +33,7 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
       </h1>
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
-      <VoteButton onClick={onClickVoteButton} disabled={point == null}/>
+      <VoteButton onClick={() => { onClickVoteButton(point) }} disabled={point == null}/>
       <br />
       <ResetButton disabled/>
     </>
@@ -46,7 +41,7 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
 }
 
 const Voted = () => {
-  return <></>
+  return <p>他の人が投票を終えるまでお待ちください（n/n名投票済み）</p>
 }
 
 const Closed = ({ roomId }: {roomId: string}) => {
@@ -93,6 +88,13 @@ export const VotingScreen = () => {
 
   const userId = getUserId()
 
+  const handleClickVoteButton = async (point: number | undefined) => {
+    if (point != null) {
+      await addVote(roomId, userId, point)
+      setStatus('voted')
+    }
+  }
+
   const judgeIsActive = async () => {
     const nVotes = await countVotes(roomId)
     if (nVotes >= parseInt(roomSizeString)) {
@@ -110,7 +112,7 @@ export const VotingScreen = () => {
   )
 
   if (status === 'voting') {
-    return <Voting roomId={roomId} userId={userId} />
+    return <Voting roomId={roomId} userId={userId} onClickVoteButton={handleClickVoteButton}/>
   }
 
   if (status === 'voted') {
