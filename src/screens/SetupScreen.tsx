@@ -27,6 +27,7 @@ export const SetupScreen = () => {
         <Form.Label style={{ display: 'flex', alignItems: 'end' }}>参加人数</Form.Label>
         <Form.Control type="number" onChange={handleChange} style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
             人
+            {/* TODO: sizeの値に応じて、ボタンをdisabledにする */}
         <Button onClick={handleClick} style={{ justifyContent: 'center', display: 'flex', padding: '0.5rem', marginLeft: '3rem' }}>作成する</Button>
       </Form.Group>
 

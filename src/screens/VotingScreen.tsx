@@ -37,6 +37,7 @@ const Voting = ({ onClickVoteButton }
 
   return (
     <>
+      {/* TODO: メッセージ部分をコンポーネントして切り出す */}
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         <MdHowToVote /> 投票してください
       </p>
@@ -74,6 +75,7 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
 
   const maxPoint = Math.max(...points)
   const minPoint = Math.min(...points)
+  // TODO:ここの挙動が怪しい
   const message = maxPoint === minPoint ? '全員一致 🎉' : `まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
 
   return (
@@ -109,6 +111,7 @@ export const VotingScreen = () => {
   const [myPoint, setMyPoint] = useMyPoint(roomId, userId)
   const [nVotes, setNVotes] = useState(0)
 
+  // TODO: 投票ボタンを押した直後、即座にnVotesに1を加えると良さそう
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
       await addVote(roomId, userId, point)

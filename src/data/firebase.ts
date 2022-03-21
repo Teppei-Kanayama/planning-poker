@@ -41,6 +41,7 @@ export const countVotes = async (roomId: string) => {
   return count
 }
 
+// TODO: sortする
 export const fetchAllPoints = async (roomId: string) => {
   const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
   const querySnapshot = await getDocs(ref)
