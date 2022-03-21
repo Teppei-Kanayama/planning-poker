@@ -8,21 +8,21 @@ import { ResetButton, VoteButton } from '../components/Button'
 
 type Status = 'voting' | 'voted' | 'closed'
 
-// すでに投票済みかどうかをDBに問い合わせるカスタムフック
+// 自分が投票したポイントを管理するカスタムフック
 const useHasVoted = (roomId: string, userId: string) => {
-  const [hasVoted, setHasVoted] = useState<boolean>(false)
+  const [myPoint, setMyPoint] = useState<number>()
 
   useEffect(() => {
     const setExistingPoint = async () => {
       const vote = await findVote(roomId, userId)
       if (vote != null) {
-        setHasVoted(true)
+        setMyPoint(vote.point)
       }
     }
     setExistingPoint()
   }, [])
 
-  return [hasVoted]
+  return [myPoint, setMyPoint] as const
 }
 
 const Voting = ({ onClickVoteButton }
@@ -47,11 +47,14 @@ const Voting = ({ onClickVoteButton }
   )
 }
 
-const Voted = ({ roomSize }: {roomSize: number}) => {
+const Voted = ({ roomSize, myPoint }: {roomSize: number, myPoint: number | undefined}) => {
   return (
   <>
     <p>
     { `他の人が投票を終えるまでお待ちください（${roomSize}/${roomSize}名投票済み）` }
+    </p>
+    <p>
+    { `私の投票は${myPoint}ポイントです` }
     </p>
     <FibonacciCards disabled />
     <br />
@@ -61,7 +64,7 @@ const Voted = ({ roomSize }: {roomSize: number}) => {
   </>)
 }
 
-const Closed = ({ roomId }: {roomId: string}) => {
+const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefined}) => {
   const [points, setPoints] = useState<number[]>([])
 
   useEffect(() => {
@@ -78,6 +81,9 @@ const Closed = ({ roomId }: {roomId: string}) => {
 
   return (
     <>
+      <p>
+        { `私の投票は${myPoint}ポイントです` }
+      </p>
       <FibonacciCards disabled/>
       <br />
       <VoteButton disabled/>
@@ -106,29 +112,30 @@ export const VotingScreen = () => {
   const roomSize = parseInt(roomSizeString)
   const userId = getUserId()
 
-  const [hasVoted] = useHasVoted(roomId, userId)
+  const [myPoint, setMyPoint] = useHasVoted(roomId, userId)
 
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
       await addVote(roomId, userId, point)
+      setMyPoint(point)
       setStatus('voted')
     }
   }
 
-  const judgeIsActive = async () => {
+  const updateStatus = async () => {
     const nVotes = await countVotes(roomId)
     if (nVotes >= roomSize) {
       setStatus('closed')
     } else if (nVotes === 0) {
       setStatus('voting')
-    } else if (hasVoted) {
+    } else if (myPoint != null) {
       setStatus('voted')
     }
   }
 
   useEffect(
     () => {
-      const nIntervId = setInterval(judgeIsActive, 3000)
+      const nIntervId = setInterval(updateStatus, 3000)
       return () => { clearInterval(nIntervId) }
     }
   )
@@ -138,8 +145,8 @@ export const VotingScreen = () => {
   }
 
   if (status === 'voted') {
-    return <Voted roomSize={roomSize}/>
+    return <Voted roomSize={roomSize} myPoint={myPoint}/>
   }
 
-  return <Closed roomId={roomId} />
+  return <Closed roomId={roomId} myPoint={myPoint}/>
 }
