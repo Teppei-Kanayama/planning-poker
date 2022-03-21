@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { getUserId } from '../data/localStorage'
-import { VoteButton } from '../components/Button'
+import { ResetButton, VoteButton } from '../components/Button'
 
 const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   const [point, setPoint] = useState<number>()
@@ -37,6 +37,8 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
       <VoteButton onClick={onClickVoteButton} disabled={point == null}/>
+      <br />
+      <ResetButton disabled/>
     </>
   )
 }
@@ -58,15 +60,13 @@ const Voted = ({ roomId }: {roomId: string}) => {
 
   return (
     <>
-      <FibonacciCards disabled={true}/>
+      <FibonacciCards disabled/>
       <br />
-      <VoteButton disabled={true}/>
+      <VoteButton disabled/>
       <br />
-      <VoteCards points={points} disabled={true}/>
+      <VoteCards points={points} disabled/>
       <br />
-      <button onClick={onClickResetAllVotes}>
-          全員の投票をリセット
-      </button>
+      <ResetButton onClick={onClickResetAllVotes} />
     </>
   )
 }
