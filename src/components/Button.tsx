@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 
 export const VoteButton = (props: {onClick?: () => void, disabled?: boolean}) => {
   return (
-    <Button {...props} variant='primary'>
+    <Button {...props} variant='primary' style={{ marginLeft: '1rem' }}>
       投票
     </Button>
   )

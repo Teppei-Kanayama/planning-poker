@@ -36,13 +36,11 @@ const Voting = ({ onClickVoteButton }
 
   return (
     <>
-      <p>
+      <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         投票してください
       </p>
       <FibonacciCards onClick={onClickVoteCard} />
-      <br />
       <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
-      <ResetButton disabled/>
     </>
   )
 }
@@ -139,7 +137,7 @@ export const VotingScreen = () => {
 
   return (
     <>
-      <h1>投票所（定員: {roomSize}名）</h1>
+      <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSize}名）</h1>
       {
         status === 'voting' && (
           <Voting onClickVoteButton={handleClickVoteButton}/>

@@ -6,21 +6,24 @@ import Button from 'react-bootstrap/Button'
 export const VoteCards = ({ points, onClick, disabled, myPoint }:
    {points: number[], onClick?: (p: number) => void, disabled?: boolean, myPoint?: number}) => {
   return (
-    <ButtonGroup size="lg" className="mb-2" style={{ height: '5rem' }}>
-    {points.map((point) => {
-      const variant = (myPoint && myPoint === point) ? 'dark' : 'outline-dark'
-      return (
-        <Button
-          key={point}
-          onClick={() => { onClick && onClick(point) }}
-          disabled={disabled}
-          variant={variant}
-          style={{ width: '4rem' }}>
-          {point}
-        </Button>
-      )
-    })}
-  </ButtonGroup>
+      <>
+        <ButtonGroup size="lg" className="mb-2" style={{ height: '8rem', padding: '1rem' }}>
+          {points.map((point) => {
+            const variant = (myPoint && myPoint === point) ? 'dark' : 'outline-dark'
+            return (
+              <Button
+                key={point}
+                onClick={() => { onClick && onClick(point) }}
+                disabled={disabled}
+                variant={variant}
+                style={{ width: '4rem' }}>
+                {point}
+              </Button>
+            )
+          })}
+        </ButtonGroup>
+        <br />
+    </>
   )
 }
 
