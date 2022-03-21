@@ -72,16 +72,16 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
     await deleteAllVotes(roomId)
   }
 
+  const message = 'まずは1ポイントに投票した人に話を聞いてみましょう！'
+
   return (
     <>
-      <p>
-        投票結果を確認しましょう
-      </p>
       <FibonacciCards disabled myPoint={myPoint}/>
-      <br />
-      <VoteCards points={points} disabled/>
-      <br />
       <VoteButton disabled/>
+      <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
+        【投票結果】 {message}
+      </p>
+      <VoteCards points={points} disabled/>
       <ResetButton onClick={onClickResetAllVotes} />
     </>
   )
