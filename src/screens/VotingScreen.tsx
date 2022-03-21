@@ -31,7 +31,9 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
 
   return (
     <>
-      <p>{point}を選択中</p>
+      <h1>
+        { `pointは${point}です` }
+      </h1>
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
       <VoteButton onClick={onClickVoteButton} disabled={point == null}/>
@@ -56,11 +58,11 @@ const Voted = ({ roomId }: {roomId: string}) => {
 
   return (
     <>
-      <FibonacciCards onClick={() => {}} />
+      <FibonacciCards disabled={true}/>
       <br />
       <VoteButton disabled={true}/>
       <br />
-      <VoteCards points={points} onClick={() => {}} />
+      <VoteCards points={points} disabled={true}/>
       <br />
       <button onClick={onClickResetAllVotes}>
           全員の投票をリセット
