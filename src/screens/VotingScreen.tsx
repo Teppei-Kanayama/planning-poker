@@ -150,13 +150,24 @@ export const VotingScreen = () => {
     }
   )
 
-  if (status === 'voting') {
-    return <Voting onClickVoteButton={handleClickVoteButton}/>
-  }
-
-  if (status === 'voted') {
-    return <Voted roomSize={roomSize} myPoint={myPoint} nVotes={nVotes}/>
-  }
-
-  return <Closed roomId={roomId} myPoint={myPoint}/>
+  return (
+    <>
+      <h1>投票所（定員: {roomSize}名）</h1>
+      {
+        status === 'voting' && (
+          <Voting onClickVoteButton={handleClickVoteButton}/>
+        )
+      }
+      {
+        status === 'voted' && (
+          <Voted roomSize={roomSize} myPoint={myPoint} nVotes={nVotes}/>
+        )
+      }
+      {
+        status === 'closed' && (
+          <Closed roomId={roomId} myPoint={myPoint}/>
+        )
+      }
+    </>
+  )
 }
