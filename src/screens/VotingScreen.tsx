@@ -8,24 +8,24 @@ import { ResetButton, VoteButton } from '../components/Button'
 
 type Status = 'voting' | 'voted' | 'closed'
 
-const usePoint = (roomId: string, userId: string) => {
-  const [point, setPoint] = useState<number>()
+const useHasVoted = (roomId: string, userId: string) => {
+  const [hasVoted, setHasVoted] = useState<boolean>(false)
 
   useEffect(() => {
     const setExistingPoint = async () => {
       const vote = await findVote(roomId, userId)
       if (vote != null) {
-        setPoint(vote.point)
+        setHasVoted(true)
       }
     }
     setExistingPoint()
   }, [])
 
-  return point
+  return hasVoted
 }
 
-const Voting = ({ roomId, userId, onClickVoteButton }
-  : {roomId: string, userId: string, onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
+const Voting = ({ onClickVoteButton }
+  : {onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
   const onClickVoteCard = (p: number) => {
@@ -94,7 +94,7 @@ export const VotingScreen = () => {
 
   const userId = getUserId()
 
-  const votedPoint = usePoint(roomId, userId)
+  const hasVoted = useHasVoted(roomId, userId)
 
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
@@ -109,7 +109,7 @@ export const VotingScreen = () => {
       setStatus('closed')
     } else if (nVotes === 0) {
       setStatus('voting')
-    } else if (votedPoint != null) {
+    } else if (hasVoted) {
       setStatus('voted')
     }
   }
@@ -122,7 +122,7 @@ export const VotingScreen = () => {
   )
 
   if (status === 'voting') {
-    return <Voting roomId={roomId} userId={userId} onClickVoteButton={handleClickVoteButton}/>
+    return <Voting onClickVoteButton={handleClickVoteButton}/>
   }
 
   if (status === 'voted') {
