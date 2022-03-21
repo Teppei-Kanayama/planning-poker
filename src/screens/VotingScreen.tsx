@@ -61,7 +61,7 @@ const Voted = ({ roomSize, myPoint, nVotes }: {roomSize: number, myPoint: number
     <p>
     { `私の投票は${myPoint}ポイントです` }
     </p>
-    <FibonacciCards disabled />
+    <FibonacciCards disabled myPoint={myPoint}/>
     <br />
     <VoteButton disabled />
     <br />
@@ -92,7 +92,7 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
       <p>
         { `私の投票は${myPoint}ポイントです` }
       </p>
-      <FibonacciCards disabled/>
+      <FibonacciCards disabled myPoint={myPoint}/>
       <br />
       <VoteButton disabled/>
       <br />
