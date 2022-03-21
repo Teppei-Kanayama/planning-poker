@@ -6,6 +6,8 @@ import { FibonacciCards, VoteCards } from '../components/Cards'
 import { getUserId } from '../data/localStorage'
 import { ResetButton, VoteButton } from '../components/Button'
 
+type Status = 'voting' | 'voted' | 'closed'
+
 const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   const [point, setPoint] = useState<number>()
 
@@ -43,7 +45,11 @@ const Voting = ({ roomId, userId }: {roomId: string, userId: string}) => {
   )
 }
 
-const Voted = ({ roomId }: {roomId: string}) => {
+const Voted = () => {
+  return <></>
+}
+
+const Closed = ({ roomId }: {roomId: string}) => {
   const [points, setPoints] = useState<number[]>([])
 
   useEffect(() => {
@@ -72,7 +78,7 @@ const Voted = ({ roomId }: {roomId: string}) => {
 }
 
 export const VotingScreen = () => {
-  const [isActive, setIsActive] = useState(true)
+  const [status, setStatus] = useState<Status>('voting')
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
@@ -88,12 +94,11 @@ export const VotingScreen = () => {
   const userId = getUserId()
 
   const judgeIsActive = async () => {
-    console.log('judgeIsActiveがよばれた！')
     const nVotes = await countVotes(roomId)
     if (nVotes >= parseInt(roomSizeString)) {
-      setIsActive(false)
+      setStatus('closed')
     } else if (nVotes === 0) {
-      setIsActive(true)
+      setStatus('voting')
     }
   }
 
@@ -104,9 +109,13 @@ export const VotingScreen = () => {
     }
   )
 
-  return (
-    isActive
-      ? <Voting roomId={roomId} userId={userId} />
-      : <Voted roomId={roomId} />
-  )
+  if (status === 'voting') {
+    return <Voting roomId={roomId} userId={userId} />
+  }
+
+  if (status === 'voted') {
+    return <Voted />
+  }
+
+  return <Closed roomId={roomId} />
 }
