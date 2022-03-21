@@ -1,18 +1,19 @@
 /* eslint-disable no-use-before-define */
 import React from 'react'
+import Button from 'react-bootstrap/Button'
 
 export const VoteButton = (props: {onClick?: () => void, disabled?: boolean}) => {
   return (
-    <button {...props}>
+    <Button {...props} variant='primary'>
       投票
-    </button>
+    </Button>
   )
 }
 
 export const ResetButton = (props: {onClick?: () => void, disabled?: boolean}) => {
   return (
-    <button {...props}>
+    <Button {...props} variant='danger'>
       全員の投票をリセット
-    </button>
+    </Button>
   )
 }
