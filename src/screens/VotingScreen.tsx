@@ -72,7 +72,9 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
     await deleteAllVotes(roomId)
   }
 
-  const message = 'まずは1ポイントに投票した人に話を聞いてみましょう！'
+  const maxPoint = Math.max(...points)
+  const minPoint = Math.min(...points)
+  const message = maxPoint === minPoint ? '全員一致 🎉' : `まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
 
   return (
     <>
