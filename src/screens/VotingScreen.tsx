@@ -8,6 +8,7 @@ import { ResetButton, VoteButton } from '../components/Button'
 
 type Status = 'voting' | 'voted' | 'closed'
 
+// すでに投票済みかどうかをDBに問い合わせるカスタムフック
 const useHasVoted = (roomId: string, userId: string) => {
   const [hasVoted, setHasVoted] = useState<boolean>(false)
 
@@ -21,7 +22,7 @@ const useHasVoted = (roomId: string, userId: string) => {
     setExistingPoint()
   }, [])
 
-  return hasVoted
+  return [hasVoted]
 }
 
 const Voting = ({ onClickVoteButton }
@@ -46,8 +47,18 @@ const Voting = ({ onClickVoteButton }
   )
 }
 
-const Voted = () => {
-  return <p>他の人が投票を終えるまでお待ちください（n/n名投票済み）</p>
+const Voted = ({ roomSize }: {roomSize: number}) => {
+  return (
+  <>
+    <p>
+    { `他の人が投票を終えるまでお待ちください（${roomSize}/${roomSize}名投票済み）` }
+    </p>
+    <FibonacciCards disabled />
+    <br />
+    <VoteButton disabled />
+    <br />
+    <ResetButton disabled/>
+  </>)
 }
 
 const Closed = ({ roomId }: {roomId: string}) => {
@@ -92,9 +103,10 @@ export const VotingScreen = () => {
     )
   }
 
+  const roomSize = parseInt(roomSizeString)
   const userId = getUserId()
 
-  const hasVoted = useHasVoted(roomId, userId)
+  const [hasVoted] = useHasVoted(roomId, userId)
 
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
@@ -105,7 +117,7 @@ export const VotingScreen = () => {
 
   const judgeIsActive = async () => {
     const nVotes = await countVotes(roomId)
-    if (nVotes >= parseInt(roomSizeString)) {
+    if (nVotes >= roomSize) {
       setStatus('closed')
     } else if (nVotes === 0) {
       setStatus('voting')
@@ -126,7 +138,7 @@ export const VotingScreen = () => {
   }
 
   if (status === 'voted') {
-    return <Voted />
+    return <Voted roomSize={roomSize}/>
   }
 
   return <Closed roomId={roomId} />
