@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { MdHowToVote } from 'react-icons/md'
 
 import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
@@ -37,7 +38,7 @@ const Voting = ({ onClickVoteButton }
   return (
     <>
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        投票してください
+        <MdHowToVote /> 投票してください
       </p>
       <FibonacciCards onClick={onClickVoteCard} />
       <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
