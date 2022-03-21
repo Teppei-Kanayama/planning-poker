@@ -87,17 +87,22 @@ export const VotingScreen = () => {
 
   const userId = getUserId()
 
-  useEffect(() => {
-    const judgeIsActive = async () => {
-      const nVotes = await countVotes(roomId)
-      if (nVotes >= parseInt(roomSizeString)) {
-        setIsActive(false)
-      } else if (nVotes === 0) {
-        setIsActive(true)
-      }
+  const judgeIsActive = async () => {
+    console.log('judgeIsActiveがよばれた！')
+    const nVotes = await countVotes(roomId)
+    if (nVotes >= parseInt(roomSizeString)) {
+      setIsActive(false)
+    } else if (nVotes === 0) {
+      setIsActive(true)
     }
-    judgeIsActive()
-  })
+  }
+
+  useEffect(
+    () => {
+      const nIntervId = setInterval(judgeIsActive, 3000)
+      return () => { clearInterval(nIntervId) }
+    }
+  )
 
   return (
     isActive
