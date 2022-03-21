@@ -37,16 +37,11 @@ const Voting = ({ onClickVoteButton }
   return (
     <>
       <p>
-        { `投票してください（現在選択中のpointは${temporaryPoint}です）` }
+        投票してください
       </p>
-      <p>
-      { `現在の選択は${temporaryPoint}ポイントです` }
-      </p>
-      <br />
       <FibonacciCards onClick={onClickVoteCard} />
       <br />
       <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
-      <br />
       <ResetButton disabled/>
     </>
   )
@@ -58,13 +53,9 @@ const Voted = ({ roomSize, myPoint, nVotes }: {roomSize: number, myPoint: number
     <p>
     { `他の人が投票を終えるまでお待ちください（${nVotes}/${roomSize}名投票済み）` }
     </p>
-    <p>
-    { `私の投票は${myPoint}ポイントです` }
-    </p>
     <FibonacciCards disabled myPoint={myPoint}/>
     <br />
     <VoteButton disabled />
-    <br />
     <ResetButton disabled/>
   </>)
 }
@@ -89,15 +80,11 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
       <p>
         投票結果を確認しましょう
       </p>
-      <p>
-        { `私の投票は${myPoint}ポイントです` }
-      </p>
       <FibonacciCards disabled myPoint={myPoint}/>
-      <br />
-      <VoteButton disabled/>
       <br />
       <VoteCards points={points} disabled/>
       <br />
+      <VoteButton disabled/>
       <ResetButton onClick={onClickResetAllVotes} />
     </>
   )
