@@ -4,6 +4,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import firebase from 'firebase/compat/app'
 
 export const SetupScreen = () => {
   const [size, setSize] = useState(0)
@@ -51,6 +52,8 @@ export const SetupScreen = () => {
           </>
         )
       }
+
+      <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
     </>
   )
 }
