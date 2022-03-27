@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
-import { DocumentData, QuerySnapshot } from 'firebase/firestore'
+// import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
 import { addVote, deleteAllVotes, fetchAllPoints, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
@@ -55,6 +55,8 @@ const Voted = (props: CommonProps & {voteCount: number}) => {
 const Closed = (props: CommonProps) => {
   const { roomId, userId } = props
   const [myPoint] = useMyPoint(roomId, userId)
+
+  // TODO: ここをcustom hookに置き換える
   const [points, setPoints] = useState<number[]>([])
 
   useEffect(() => {
@@ -97,37 +99,36 @@ const Closed = (props: CommonProps) => {
 const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: number, userId: string}) => {
   const [voteCount, setVoteCount] = useState(0)
   const [myVoteCount, setMyVoteCount] = useState(0)
-
-  const handleUpdateCollection = (querySnapshot: QuerySnapshot<DocumentData>) => {
-    let count = 0
-    let myCount = 0
-    querySnapshot.forEach(
-      (doc) => {
-        const data = doc.data()
-        if (data.roomId === roomId) {
-          count += 1
-          if (data.userId === userId) {
-            myCount += 1
-          }
-        }
-      }
-    )
-    setVoteCount(count)
-    setMyVoteCount(myCount)
-  }
-
-  useEffect(
-    () => {
-      const unsubscribe = subscribeCollection(handleUpdateCollection)
-      return () => { unsubscribe() }
-    }
-    , [])
-
   const commonProps = {
     roomId: roomId,
     roomSize: roomSize,
     userId: userId
   }
+
+  useEffect(
+    () => {
+      const unsubscribe = subscribeCollection(
+        (querySnapshot) => {
+          let count = 0
+          let myCount = 0
+          querySnapshot.forEach(
+            (doc) => {
+              const data = doc.data()
+              if (data.roomId === roomId) {
+                count += 1
+                if (data.userId === userId) {
+                  myCount += 1
+                }
+              }
+            }
+          )
+          setVoteCount(count)
+          setMyVoteCount(myCount)
+        }
+      )
+      return () => { unsubscribe() }
+    }
+    , [])
 
   if (voteCount >= roomSize) {
     return <Closed {...commonProps}/>
