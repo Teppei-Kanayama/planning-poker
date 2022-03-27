@@ -73,17 +73,24 @@ const Closed = (props: CommonProps) => {
     await deleteAllVotes(roomId)
   }
 
-  const maxPoint = Math.max(...points)
-  const minPoint = Math.min(...points)
-  // TODO:ここの挙動が怪しい
-  const message = maxPoint === minPoint ? '全員一致 🎉' : `まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
+  const getMessage = () => {
+    if (points.length === 0) {
+      return ''
+    }
+    const maxPoint = Math.max(...points)
+    const minPoint = Math.min(...points)
+    if (maxPoint === minPoint) {
+      return '全員一致 🎉'
+    }
+    return `まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
+  }
 
   return (
     <>
       <FibonacciCards disabled myPoint={myPoint}/>
       <VoteButton disabled/>
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        【投票結果】 {message}
+        【投票結果】 {getMessage()}
       </p>
       <VoteCards points={points} disabled/>
       <ResetButton onClick={onClickResetAllVotes} />
