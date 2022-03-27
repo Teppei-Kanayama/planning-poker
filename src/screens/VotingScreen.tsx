@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
-import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote, subscribeCollection } from '../data/firebase'
+import { addVote, deleteAllVotes, fetchAllPoints, findVote, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
@@ -92,7 +92,6 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
 }
 
 export const VotingScreen = ({ userId }: {userId: string}) => {
-  const [status, setStatus] = useState<Status>('voting')
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
@@ -115,27 +114,20 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     if (point != null) {
       await addVote(roomId, userId, point)
       setMyPoint(point)
-      setStatus('voted')
     }
   }
 
-  const updateStatus = async () => {
-    const _nVotes = await countVotes(roomId)
-    setNVotes(_nVotes)
-    if (_nVotes >= roomSize) {
-      setStatus('closed')
-    } else if (_nVotes === 0) {
-      setStatus('voting')
-    } else if (myPoint != null) {
-      setStatus('voted')
-    }
-  }
-
-  const handleUpdateCollection = (docs: QuerySnapshot<DocumentData>) => {
-    console.log('Current data: ')
-    docs.forEach(
-      (doc) => { console.log(doc.data()) }
+  const handleUpdateCollection = (querySnapshot: QuerySnapshot<DocumentData>) => {
+    let _nVotes = 0
+    querySnapshot.forEach(
+      (doc) => {
+        const data = doc.data()
+        if (data.roomId === roomId) {
+          _nVotes += 1
+        }
+      }
     )
+    setNVotes(_nVotes)
   }
 
   useEffect(
@@ -145,12 +137,16 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     }
     , [])
 
-  useEffect(
-    () => {
-      const nIntervId = setInterval(updateStatus, 3000)
-      return () => { clearInterval(nIntervId) }
-    }
-  )
+  let status: Status
+  if (nVotes >= roomSize) {
+    status = 'closed'
+  } else if (nVotes === 0) {
+    status = 'voting'
+  } else if (myPoint != null) {
+    status = 'voted'
+  } else {
+    status = 'voting'
+  }
 
   return (
     <>
