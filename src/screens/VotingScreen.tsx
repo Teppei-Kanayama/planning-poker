@@ -2,13 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
+import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
 import { addVote, deleteAllVotes, fetchAllPoints, findVote, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
-import { DocumentData, QuerySnapshot } from 'firebase/firestore'
-
-type Status = 'voting' | 'voted' | 'closed'
 
 // 自分が投票したポイントを管理するカスタムフック
 const useMyPoint = (roomId: string, userId: string) => {
@@ -137,16 +135,19 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     }
     , [])
 
-  let status: Status
-  if (voteCount >= roomSize) {
-    status = 'closed'
-  } else if (voteCount === 0) {
-    status = 'voting'
-  } else if (myPoint != null) {
-    status = 'voted'
-  } else {
-    status = 'voting'
+  const getStatus = () => {
+    if (voteCount >= roomSize) {
+      return 'closed'
+    }
+    if (voteCount === 0) {
+      return 'voting'
+    }
+    if (myPoint != null) {
+      return 'voted'
+    }
+    return 'voting'
   }
+  const status = getStatus()
 
   return (
     <>
