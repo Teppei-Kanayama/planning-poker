@@ -8,6 +8,7 @@ import { addVote, deleteAllVotes, fetchAllPoints, subscribeCollection } from '..
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
 import { useMyPoint } from '../hooks/points'
+import { Message } from '../components/Message'
 
 type CommonProps = {
   roomId: string,
@@ -32,10 +33,7 @@ const Voting = (props: CommonProps) => {
 
   return (
     <>
-      {/* TODO: メッセージ部分をコンポーネントして切り出す */}
-      <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        <MdHowToVote /> 投票してください
-      </p>
+      <Message PrefixIconComponent={MdHowToVote} message='投票してください'/>
       <FibonacciCards onClick={handleClickVoteCard} />
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
@@ -48,9 +46,7 @@ const Voted = (props: CommonProps & {voteCount: number}) => {
 
   return (
   <>
-    <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        <MdCoffee /> 他の人が投票を終えるまでお待ちください（{voteCount}人/{roomSize}人 投票済み）
-    </p>
+    <Message PrefixIconComponent={MdCoffee} message={`他の人が投票を終えるまでお待ちください（${voteCount}人/${roomSize}人 投票済み）`}/>
     <FibonacciCards disabled myPoint={myPoint}/>
     <VoteButton disabled />
   </>)
