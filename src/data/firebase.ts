@@ -15,10 +15,6 @@ export const subscribeCollection = (callback: (doc: QuerySnapshot<DocumentData>)
   return onSnapshot(collection(db, 'points'), callback)
 }
 
-export const getDocumentReference = () => {
-  return collection(db, 'points')
-}
-
 export const findVote = async (roomId: string, userId: string) => {
   const docName = getDocName(roomId, userId)
   const ref = doc(db, 'points', docName)
@@ -39,14 +35,6 @@ export const addVote = async (roomId: string, userId: string, point: number) => 
     // TODO: エラーハンドリング
     console.error('Error adding document: ', e)
   }
-}
-
-export const countVotes = async (roomId: string) => {
-  const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
-  const querySnapshot = await getDocs(ref)
-  let count = 0
-  querySnapshot.forEach(() => { count += 1 })
-  return count
 }
 
 // TODO: sortする
