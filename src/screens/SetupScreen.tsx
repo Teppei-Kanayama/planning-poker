@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { SignOutButton } from '../components/Button'
+import { MdOutlineContentCopy } from 'react-icons/md'
 
 export const SetupScreen = () => {
   const [size, setSize] = useState('')
@@ -39,17 +40,20 @@ export const SetupScreen = () => {
       {
         roomUrl && (
           <>
-            <br />
-            作成されました！
-            <br />
-            <a href={roomUrl} target="_blank" rel="noreferrer">{roomUrl}</a>
+            <h3 style={{ padding: '1rem' }}>
+              作成されました！
+            </h3>
+
+            <a href={roomUrl} target="_blank" rel="noreferrer" style={{ padding: '1rem' }}>
+              {roomUrl}
+            </a>
             <CopyToClipboard text={roomUrl} onCopy={() => { setCopied(true) }}>
-              <Button>クリップボードにコピー</Button>
+              <Button variant="light"><MdOutlineContentCopy/></Button>
             </CopyToClipboard>
             {
               copied && (
                 <>
-                  コピーされました！
+                  copied!
                 </>
               )
             }
