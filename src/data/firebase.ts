@@ -1,6 +1,8 @@
 // Initialize Cloud Firestore through Firebase
 import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, query, where, getDocs, deleteDoc, setDoc, doc, getDoc, onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore'
+import firebase from 'firebase/compat/app'
+
 import { firebaseKeys } from './constants'
 
 initializeApp(firebaseKeys)
@@ -10,6 +12,8 @@ const db = getFirestore()
 const getDocName = (roomId:string, userId: string) => {
   return roomId + userId
 }
+
+export const signOut = () => firebase.auth().signOut()
 
 export const subscribeCollection = (callback: (doc: QuerySnapshot<DocumentData>) => void) => {
   return onSnapshot(collection(db, 'points'), callback)

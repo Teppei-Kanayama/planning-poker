@@ -5,7 +5,7 @@ import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
-import { ResetButton, VoteButton } from '../components/Button'
+import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
 import { useAllPoints, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 
@@ -145,6 +145,7 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
 
   return (
     <>
+      <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
       <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId}/>
     </>
