@@ -8,6 +8,7 @@ import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
 import { useAllPoints, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
+import { LoadingScreen } from './LoadingScreen'
 
 type CommonProps = {
   roomId: string,
@@ -88,8 +89,8 @@ const Closed = (props: CommonProps) => {
 }
 
 const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: number, userId: string}) => {
-  const [voteCount, setVoteCount] = useState(0)
-  const [myVoteCount, setMyVoteCount] = useState(0)
+  const [voteCount, setVoteCount] = useState<number>()
+  const [myVoteCount, setMyVoteCount] = useState<number>()
   const commonProps = {
     roomId: roomId,
     roomSize: roomSize,
@@ -121,6 +122,9 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
     }
     , [])
 
+  if (voteCount == null || myVoteCount == null) {
+    return <LoadingScreen />
+  }
   if (voteCount >= roomSize) {
     return <Closed {...commonProps}/>
   }

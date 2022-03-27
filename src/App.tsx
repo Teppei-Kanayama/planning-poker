@@ -5,23 +5,14 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { SetupScreen } from './screens/SetupScreen'
 import { VotingScreen } from './screens/VotingScreen'
 import { SignInScreen } from './screens/SignInScreen'
+import { LoadingScreen } from './screens/LoadingScreen'
 import { useSignIn } from './hooks/firebase'
-import ReactLoading from 'react-loading'
 
 function App () {
   const [userId, isLoading] = useSignIn()
 
   if (isLoading) {
-    return (
-    <div style={{
-      marginTop: '20rem',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <ReactLoading type="spokes" color="#0000FF" height={200} width={100} />
-      </div>
-    )
+    return <LoadingScreen />
   }
 
   if (userId == null) {
