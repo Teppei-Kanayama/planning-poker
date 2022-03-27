@@ -21,8 +21,18 @@ export const ResetButton = (props: {onClick?: () => void, disabled?: boolean}) =
 
 export const SignOutButton = () => {
   return (
-      <div style={{ display: 'flex' }}>
-        <Button onClick={signOut} variant="light" style={{ marginLeft: 'auto' }}> サインアウト</Button>
-      </div>
+    <div style={{ display: 'flex' }}>
+      <Button
+        onClick={
+          () => {
+            signOut()
+            location.reload()
+          }
+        }
+        variant="light"
+        style={{ marginLeft: 'auto' }}>
+      サインアウト
+      </Button>
+    </div>
   )
 }
