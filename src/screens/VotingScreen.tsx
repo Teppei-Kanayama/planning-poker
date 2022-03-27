@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
-import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote, getDocumentReference } from '../data/firebase'
+import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
-import { onSnapshot } from 'firebase/firestore'
+import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
 type Status = 'voting' | 'voted' | 'closed'
 
@@ -131,15 +131,16 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     }
   }
 
+  const handleUpdateCollection = (docs: QuerySnapshot<DocumentData>) => {
+    console.log('Current data: ')
+    docs.forEach(
+      (doc) => { console.log(doc.data()) }
+    )
+  }
+
   useEffect(
     () => {
-      const documentReference = getDocumentReference()
-      const unsub = onSnapshot(documentReference, (docs) => {
-        console.log('Current data: ')
-        docs.forEach(
-          (doc) => { console.log(doc.data()) }
-        )
-      })
+      const unsub = subscribeCollection(handleUpdateCollection)
       return () => { unsub() }
     }
     , [])
