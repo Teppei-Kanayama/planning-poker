@@ -41,7 +41,7 @@ export const SetupScreen = () => {
         roomUrl && (
           <>
             <h3 style={{ padding: '1rem' }}>
-              作成されました！
+              ↓投票所が作成されました！投票所のリンクを参加者に配布しましょう。
             </h3>
 
             <a href={roomUrl} target="_blank" rel="noreferrer" style={{ padding: '1rem' }}>
