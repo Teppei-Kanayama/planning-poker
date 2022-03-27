@@ -9,7 +9,7 @@ export const VoteCards = ({ points, onClick, disabled, myPoint }:
       <>
         <ButtonGroup size="lg" className="mb-2" style={{ height: '8rem', padding: '1rem' }}>
           {points.map((point) => {
-            const variant = (myPoint && myPoint === point) ? 'dark' : 'outline-dark'
+            const variant = (myPoint != null && myPoint === point) ? 'dark' : 'outline-dark'
             return (
               <Button
                 key={point}
