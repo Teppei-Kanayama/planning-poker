@@ -11,6 +11,10 @@ const getDocName = (roomId:string, userId: string) => {
   return roomId + userId
 }
 
+export const getDocumentReference = () => {
+  return collection(db, 'points')
+}
+
 export const findVote = async (roomId: string, userId: string) => {
   const docName = getDocName(roomId, userId)
   const ref = doc(db, 'points', docName)
