@@ -106,8 +106,8 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
 
   const [myPoint, setMyPoint] = useMyPoint(roomId, userId)
   const [voteCount, setVoteCount] = useState(0)
+  const [myVoteCount, setMyVoteCount] = useState(0)
 
-  // TODO: 投票ボタンを押した直後、即座にvoteCountに1を加えると良さそう
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
       await addVote(roomId, userId, point)
@@ -117,15 +117,20 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
 
   const handleUpdateCollection = (querySnapshot: QuerySnapshot<DocumentData>) => {
     let count = 0
+    let myCount = 0
     querySnapshot.forEach(
       (doc) => {
         const data = doc.data()
         if (data.roomId === roomId) {
           count += 1
+          if (data.userId === userId) {
+            myCount += 1
+          }
         }
       }
     )
     setVoteCount(count)
+    setMyVoteCount(myCount)
   }
 
   useEffect(
@@ -139,10 +144,7 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     if (voteCount >= roomSize) {
       return 'closed'
     }
-    if (voteCount === 0) {
-      return 'voting'
-    }
-    if (myPoint != null) {
+    if (myVoteCount >= 1) {
       return 'voted'
     }
     return 'voting'
