@@ -5,7 +5,6 @@ import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, countVotes, deleteAllVotes, fetchAllPoints, findVote } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
-import { getUserId } from '../data/localStorage'
 import { ResetButton, VoteButton } from '../components/Button'
 
 type Status = 'voting' | 'voted' | 'closed'
@@ -91,7 +90,7 @@ const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefine
   )
 }
 
-export const VotingScreen = () => {
+export const VotingScreen = ({ userId }: {userId: string}) => {
   const [status, setStatus] = useState<Status>('voting')
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
@@ -106,7 +105,6 @@ export const VotingScreen = () => {
   }
 
   const roomSize = parseInt(roomSizeString)
-  const userId = getUserId()
 
   const [myPoint, setMyPoint] = useMyPoint(roomId, userId)
   const [nVotes, setNVotes] = useState(0)

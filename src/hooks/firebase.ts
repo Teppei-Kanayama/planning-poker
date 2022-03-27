@@ -8,16 +8,18 @@ import { firebaseKeys } from '../data/constants'
 firebase.initializeApp(firebaseKeys)
 
 export const useSignIn = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [userId, setUserId] = useState<string>()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-      setIsSignedIn(!!user)
+      if (user != null) {
+        setUserId(user.uid)
+      }
       setIsLoading(false)
     })
     return () => unregisterAuthObserver() // Make sure we un-register Firebase observers when the component unmounts.
   }, [])
 
-  return [isSignedIn, isLoading]
+  return [userId, isLoading] as const
 }

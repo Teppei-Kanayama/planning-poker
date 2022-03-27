@@ -9,7 +9,7 @@ import { useSignIn } from './hooks/firebase'
 import ReactLoading from 'react-loading'
 
 function App () {
-  const [isSignedIn, isLoading] = useSignIn()
+  const [userId, isLoading] = useSignIn()
 
   if (isLoading) {
     return (
@@ -24,15 +24,16 @@ function App () {
     )
   }
 
-  if (!isSignedIn) {
+  if (userId == null) {
     return <SignInScreen/>
   }
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SetupScreen />} />
         <Route path="/create-new-room" element={<SetupScreen />} />
-        <Route path="/room" element={<VotingScreen />} />
+        <Route path="/room" element={<VotingScreen userId={userId} />} />
       </Routes>
     </BrowserRouter>
   )
