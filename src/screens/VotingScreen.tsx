@@ -76,23 +76,7 @@ const Closed = ({ roomId, userId }: {roomId: string, userId: string}) => {
   )
 }
 
-export const VotingScreen = ({ userId }: {userId: string}) => {
-  const [searchParams] = useSearchParams()
-  const roomId = searchParams.get('id')
-  const roomSizeString = searchParams.get('size')
-
-  if (roomId == null || roomSizeString == null || isNaN(parseInt(roomSizeString))) {
-    return (
-      <h1>
-        URLが不正です。有効なroomIdとroomSizeを指定してください。
-      </h1>
-    )
-  }
-
-  const roomSize = parseInt(roomSizeString)
-
-  // TODO: ここから別コンポーネントにしたい
-
+const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: number, userId: string}) => {
   const [voteCount, setVoteCount] = useState(0)
   const [myVoteCount, setMyVoteCount] = useState(0)
 
@@ -158,4 +142,20 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
       }
     </>
   )
+}
+
+export const VotingScreen = ({ userId }: {userId: string}) => {
+  const [searchParams] = useSearchParams()
+  const roomId = searchParams.get('id')
+  const roomSizeString = searchParams.get('size')
+
+  if (roomId == null || roomSizeString == null || isNaN(parseInt(roomSizeString))) {
+    return (
+      <h1>
+        URLが不正です。有効なroomIdとroomSizeを指定してください。
+      </h1>
+    )
+  }
+
+  return <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId}/>
 }
