@@ -47,11 +47,11 @@ const Voting = ({ onClickVoteButton }
   )
 }
 
-const Voted = ({ roomSize, myPoint, nVotes }: {roomSize: number, myPoint: number | undefined, nVotes: number}) => {
+const Voted = ({ roomSize, myPoint, voteCount }: {roomSize: number, myPoint: number | undefined, voteCount: number}) => {
   return (
   <>
     <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        <MdCoffee /> 他の人が投票を終えるまでお待ちください（{nVotes}人/{roomSize}人 投票済み）
+        <MdCoffee /> 他の人が投票を終えるまでお待ちください（{voteCount}人/{roomSize}人 投票済み）
     </p>
     <FibonacciCards disabled myPoint={myPoint}/>
     <VoteButton disabled />
@@ -107,9 +107,9 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
   const roomSize = parseInt(roomSizeString)
 
   const [myPoint, setMyPoint] = useMyPoint(roomId, userId)
-  const [nVotes, setNVotes] = useState(0)
+  const [voteCount, setVoteCount] = useState(0)
 
-  // TODO: 投票ボタンを押した直後、即座にnVotesに1を加えると良さそう
+  // TODO: 投票ボタンを押した直後、即座にvoteCountに1を加えると良さそう
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
       await addVote(roomId, userId, point)
@@ -118,16 +118,16 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
   }
 
   const handleUpdateCollection = (querySnapshot: QuerySnapshot<DocumentData>) => {
-    let _nVotes = 0
+    let count = 0
     querySnapshot.forEach(
       (doc) => {
         const data = doc.data()
         if (data.roomId === roomId) {
-          _nVotes += 1
+          count += 1
         }
       }
     )
-    setNVotes(_nVotes)
+    setVoteCount(count)
   }
 
   useEffect(
@@ -138,9 +138,9 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     , [])
 
   let status: Status
-  if (nVotes >= roomSize) {
+  if (voteCount >= roomSize) {
     status = 'closed'
-  } else if (nVotes === 0) {
+  } else if (voteCount === 0) {
     status = 'voting'
   } else if (myPoint != null) {
     status = 'voted'
@@ -158,7 +158,7 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
       }
       {
         status === 'voted' && (
-          <Voted roomSize={roomSize} myPoint={myPoint} nVotes={nVotes}/>
+          <Voted roomSize={roomSize} myPoint={myPoint} voteCount={voteCount}/>
         )
       }
       {
