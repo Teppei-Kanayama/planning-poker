@@ -22,8 +22,8 @@ const uiConfig = {
 export const SignInScreen = () => {
   return (
     <div>
-        <h1>My App</h1>
-        <p>Please sign-in:</p>
+        <h1 style={{ marginLeft: '1rem', marginBottom: '1rem', marginTop: '1rem' }}>Planning Pokerアプリ by wallaby</h1>
+        <p style={{ marginLeft: '1rem', marginBottom: '3rem', marginTop: '1rem' }}>Googleアカウントでサインインしてください</p>
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
       </div>
   )
