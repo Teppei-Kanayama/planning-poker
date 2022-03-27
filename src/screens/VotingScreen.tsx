@@ -106,42 +106,18 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
 
   useEffect(
     () => {
-      const unsub = subscribeCollection(handleUpdateCollection)
-      return () => { unsub() }
+      const unsubscribe = subscribeCollection(handleUpdateCollection)
+      return () => { unsubscribe() }
     }
     , [])
 
-  const getStatus = () => {
-    if (voteCount >= roomSize) {
-      return 'closed'
-    }
-    if (myVoteCount >= 1) {
-      return 'voted'
-    }
-    return 'voting'
+  if (voteCount >= roomSize) {
+    return <Closed roomId={roomId} userId={userId}/>
   }
-  const status = getStatus()
-
-  return (
-    <>
-      <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSize}名）</h1>
-      {
-        status === 'voting' && (
-          <Voting onClickVoteButton={handleClickVoteButton}/>
-        )
-      }
-      {
-        status === 'voted' && (
-          <Voted roomSize={roomSize} voteCount={voteCount} roomId={roomId} userId={userId}/>
-        )
-      }
-      {
-        status === 'closed' && (
-          <Closed roomId={roomId} userId={userId}/>
-        )
-      }
-    </>
-  )
+  if (myVoteCount >= 1) {
+    return <Voted roomSize={roomSize} voteCount={voteCount} roomId={roomId} userId={userId}/>
+  }
+  return <Voting onClickVoteButton={handleClickVoteButton}/>
 }
 
 export const VotingScreen = ({ userId }: {userId: string}) => {
@@ -157,5 +133,10 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     )
   }
 
-  return <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId}/>
+  return (
+    <>
+      <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
+      <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId}/>
+    </>
+  )
 }
