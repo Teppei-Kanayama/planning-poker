@@ -20,7 +20,7 @@ const useMyPoint = (roomId: string, userId: string) => {
       }
     }
     setExistingPoint()
-  }, [])
+  })
 
   return [myPoint, setMyPoint] as const
 }
@@ -45,7 +45,10 @@ const Voting = ({ onClickVoteButton }
   )
 }
 
-const Voted = ({ roomSize, myPoint, voteCount }: {roomSize: number, myPoint: number | undefined, voteCount: number}) => {
+const Voted = ({ roomSize, voteCount, roomId, userId }: {roomSize: number, voteCount: number, roomId: string, userId: string}) => {
+  const [myPoint] = useMyPoint(roomId, userId)
+  console.log(myPoint)
+
   return (
   <>
     <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
@@ -56,8 +59,10 @@ const Voted = ({ roomSize, myPoint, voteCount }: {roomSize: number, myPoint: num
   </>)
 }
 
-const Closed = ({ roomId, myPoint }: {roomId: string, myPoint: number | undefined}) => {
+const Closed = ({ roomId, userId }: {roomId: string, userId: string}) => {
+  const [myPoint] = useMyPoint(roomId, userId)
   const [points, setPoints] = useState<number[]>([])
+  console.log(myPoint)
 
   useEffect(() => {
     const setAllPoints = async () => {
@@ -104,14 +109,13 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
 
   const roomSize = parseInt(roomSizeString)
 
-  const [myPoint, setMyPoint] = useMyPoint(roomId, userId)
   const [voteCount, setVoteCount] = useState(0)
   const [myVoteCount, setMyVoteCount] = useState(0)
 
   const handleClickVoteButton = async (point: number | undefined) => {
     if (point != null) {
       await addVote(roomId, userId, point)
-      setMyPoint(point)
+      // setMyPoint(point)
     }
   }
 
@@ -161,12 +165,12 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
       }
       {
         status === 'voted' && (
-          <Voted roomSize={roomSize} myPoint={myPoint} voteCount={voteCount}/>
+          <Voted roomSize={roomSize} voteCount={voteCount} roomId={roomId} userId={userId}/>
         )
       }
       {
         status === 'closed' && (
-          <Closed roomId={roomId} myPoint={myPoint}/>
+          <Closed roomId={roomId} userId={userId}/>
         )
       }
     </>
