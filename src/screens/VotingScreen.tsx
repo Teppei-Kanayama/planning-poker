@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
@@ -148,6 +148,7 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
       <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId}/>
+      <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
     </>
   )
 }
