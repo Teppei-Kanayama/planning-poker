@@ -24,9 +24,9 @@ const Voting = (props: CommonProps) => {
     setTemporaryPoint(p)
   }
 
-  const handleClickVoteButton = async (point: number | undefined) => {
-    if (point != null) {
-      await addVote(roomId, userId, point)
+  const handleClickVoteButton = async () => {
+    if (temporaryPoint != null) {
+      await addVote(roomId, userId, temporaryPoint)
     }
   }
 
@@ -37,12 +37,13 @@ const Voting = (props: CommonProps) => {
         <MdHowToVote /> 投票してください
       </p>
       <FibonacciCards onClick={handleClickVoteCard} />
-      <VoteButton onClick={() => { handleClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
+      <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
   )
 }
 
-const Voted = ({ roomSize, voteCount, roomId, userId }: {roomSize: number, voteCount: number, roomId: string, userId: string}) => {
+const Voted = (props: CommonProps & {voteCount: number}) => {
+  const { roomSize, voteCount, roomId, userId } = props
   const [myPoint] = useMyPoint(roomId, userId)
 
   return (
@@ -55,7 +56,8 @@ const Voted = ({ roomSize, voteCount, roomId, userId }: {roomSize: number, voteC
   </>)
 }
 
-const Closed = ({ roomId, userId }: {roomId: string, userId: string}) => {
+const Closed = (props: CommonProps) => {
+  const { roomId, userId } = props
   const [myPoint] = useMyPoint(roomId, userId)
   const [points, setPoints] = useState<number[]>([])
 
@@ -125,10 +127,10 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
   }
 
   if (voteCount >= roomSize) {
-    return <Closed roomId={roomId} userId={userId}/>
+    return <Closed {...commonProps}/>
   }
   if (myVoteCount >= 1) {
-    return <Voted roomSize={roomSize} voteCount={voteCount} roomId={roomId} userId={userId}/>
+    return <Voted voteCount={voteCount} {...commonProps}/>
   }
   return <Voting {...commonProps}/>
 }
