@@ -80,9 +80,9 @@ const Closed = (props: CommonProps) => {
     const maxPoint = Math.max(...points)
     const minPoint = Math.min(...points)
     if (maxPoint === minPoint) {
-      return '全員一致 🎉'
+      return '【投票結果】 全員一致 🎉'
     }
-    return `まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
+    return `【投票結果】 まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
   }
 
   return (
@@ -90,7 +90,7 @@ const Closed = (props: CommonProps) => {
       <FibonacciCards disabled myPoint={myPoint}/>
       <VoteButton disabled/>
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        【投票結果】 {getMessage()}
+        {getMessage()}
       </p>
       <VoteCards points={points} disabled/>
       <ResetButton onClick={onClickResetAllVotes} />
