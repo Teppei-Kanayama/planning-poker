@@ -9,12 +9,25 @@ import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
 import { useMyPoint } from '../hooks/points'
 
-const Voting = ({ onClickVoteButton }
-  : {onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
+type CommonProps = {
+  roomId: string,
+  roomSize: number,
+  userId: string
+}
+
+const Voting = (props: CommonProps) => {
+  const { roomId, userId } = props
+
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
-  const onClickVoteCard = (p: number) => {
+  const handleClickVoteCard = (p: number) => {
     setTemporaryPoint(p)
+  }
+
+  const handleClickVoteButton = async (point: number | undefined) => {
+    if (point != null) {
+      await addVote(roomId, userId, point)
+    }
   }
 
   return (
@@ -23,8 +36,8 @@ const Voting = ({ onClickVoteButton }
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         <MdHowToVote /> 投票してください
       </p>
-      <FibonacciCards onClick={onClickVoteCard} />
-      <VoteButton onClick={() => { onClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
+      <FibonacciCards onClick={handleClickVoteCard} />
+      <VoteButton onClick={() => { handleClickVoteButton(temporaryPoint) }} disabled={temporaryPoint == null}/>
     </>
   )
 }
@@ -80,12 +93,6 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
   const [voteCount, setVoteCount] = useState(0)
   const [myVoteCount, setMyVoteCount] = useState(0)
 
-  const handleClickVoteButton = async (point: number | undefined) => {
-    if (point != null) {
-      await addVote(roomId, userId, point)
-    }
-  }
-
   const handleUpdateCollection = (querySnapshot: QuerySnapshot<DocumentData>) => {
     let count = 0
     let myCount = 0
@@ -111,13 +118,19 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
     }
     , [])
 
+  const commonProps = {
+    roomId: roomId,
+    roomSize: roomSize,
+    userId: userId
+  }
+
   if (voteCount >= roomSize) {
     return <Closed roomId={roomId} userId={userId}/>
   }
   if (myVoteCount >= 1) {
     return <Voted roomSize={roomSize} voteCount={voteCount} roomId={roomId} userId={userId}/>
   }
-  return <Voting onClickVoteButton={handleClickVoteButton}/>
+  return <Voting {...commonProps}/>
 }
 
 export const VotingScreen = ({ userId }: {userId: string}) => {
