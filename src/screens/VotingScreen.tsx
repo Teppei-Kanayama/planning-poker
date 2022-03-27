@@ -36,7 +36,7 @@ const Voting = (props: CommonProps) => {
   return (
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
-      <FibonacciCards onClick={handleClickVoteCard} />
+      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
   )
@@ -49,7 +49,7 @@ const Voted = (props: CommonProps & {voteCount: number}) => {
   return (
   <>
     <Message PrefixIconComponent={MdCoffee} message={`他の人が投票を終えるまでお待ちください（${voteCount}人/${roomSize}人 投票済み）`}/>
-    <FibonacciCards disabled myPoint={myPoint}/>
+    <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
     <VoteButton disabled />
   </>)
 }
@@ -77,8 +77,8 @@ const Closed = (props: CommonProps) => {
 
   return (
     <>
-      <FibonacciCards disabled myPoint={myPoint}/>
-      <VoteButton disabled/>
+      <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
+      <VoteButton disabled />
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         {getMessage()}
       </p>
