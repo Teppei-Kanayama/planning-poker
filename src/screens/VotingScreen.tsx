@@ -4,26 +4,10 @@ import { useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
-import { addVote, deleteAllVotes, fetchAllPoints, findVote, subscribeCollection } from '../data/firebase'
+import { addVote, deleteAllVotes, fetchAllPoints, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
-
-// 自分が投票したポイントを管理するカスタムフック
-const useMyPoint = (roomId: string, userId: string) => {
-  const [myPoint, setMyPoint] = useState<number>()
-
-  useEffect(() => {
-    const setExistingPoint = async () => {
-      const vote = await findVote(roomId, userId)
-      if (vote != null) {
-        setMyPoint(vote.point)
-      }
-    }
-    setExistingPoint()
-  })
-
-  return [myPoint] as const
-}
+import { useMyPoint } from '../hooks/points'
 
 const Voting = ({ onClickVoteButton }
   : {onClickVoteButton: (p: number | undefined) => Promise<void>}) => {
