@@ -4,7 +4,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import firebase from 'firebase/compat/app'
+import { SignOutButton } from '../components/Button'
 
 export const SetupScreen = () => {
   const [size, setSize] = useState(0)
@@ -22,7 +22,8 @@ export const SetupScreen = () => {
 
   return (
     <>
-      <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>新規投票所の作成</h1>
+      <SignOutButton />
+      <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', marginBottom: '2rem' }}>新規投票所の作成</h1>
 
       <Form.Group className="mb-3" style={{ marginLeft: '1rem', display: 'flex', alignItems: 'center' }}>
         <Form.Label style={{ display: 'flex', alignItems: 'end' }}>参加人数</Form.Label>
@@ -52,8 +53,6 @@ export const SetupScreen = () => {
           </>
         )
       }
-
-      <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
     </>
   )
 }
