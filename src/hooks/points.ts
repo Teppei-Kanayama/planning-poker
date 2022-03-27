@@ -14,7 +14,7 @@ export const useMyPoint = (roomId: string, userId: string) => {
       }
     }
     setExistingPoint()
-  })
+  }, [])
 
   return [myPoint] as const
 }
