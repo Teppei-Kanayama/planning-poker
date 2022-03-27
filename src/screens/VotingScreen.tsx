@@ -2,12 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
-// import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
-import { addVote, deleteAllVotes, fetchAllPoints, subscribeCollection } from '../data/firebase'
+import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, VoteButton } from '../components/Button'
-import { useMyPoint } from '../hooks/points'
+import { useAllPoints, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 
 type CommonProps = {
@@ -55,17 +54,7 @@ const Voted = (props: CommonProps & {voteCount: number}) => {
 const Closed = (props: CommonProps) => {
   const { roomId, userId } = props
   const [myPoint] = useMyPoint(roomId, userId)
-
-  // TODO: ここをcustom hookに置き換える
-  const [points, setPoints] = useState<number[]>([])
-
-  useEffect(() => {
-    const setAllPoints = async () => {
-      const allPoints = await fetchAllPoints(roomId)
-      setPoints(allPoints)
-    }
-    setAllPoints()
-  }, [])
+  const [points] = useAllPoints(roomId)
 
   const onClickResetAllVotes = async () => {
     await deleteAllVotes(roomId)
