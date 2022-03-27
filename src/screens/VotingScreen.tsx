@@ -30,9 +30,11 @@ const Voting = (props: CommonProps) => {
     }
   }
 
+  const message = temporaryPoint == null ? '投票してください' : `投票してください（現在の選択：${temporaryPoint}）`
+
   return (
     <>
-      <Message PrefixIconComponent={MdHowToVote} message='投票してください'/>
+      <Message PrefixIconComponent={MdHowToVote} message={message}/>
       <FibonacciCards onClick={handleClickVoteCard} />
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
