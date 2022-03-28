@@ -141,7 +141,8 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
 
-  if (roomId == null || roomSizeString == null || isNaN(parseInt(roomSizeString))) {
+  const invalidRoomSizeString = roomSizeString == null || !Number.isInteger(parseFloat(roomSizeString)) || parseInt(roomSizeString) <= 0
+  if (roomId == null || invalidRoomSizeString) {
     return (
       <h1>
         URLが不正です。有効なroomIdとroomSizeを指定してください。
