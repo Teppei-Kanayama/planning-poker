@@ -47,6 +47,7 @@ const Voted = (props: CommonProps & {voteCount: number}) => {
   const { roomSize, voteCount, roomId, userId } = props
   const [myPoint] = useMyPoint(roomId, userId)
 
+  // TODO: 削除機能をつける
   return (
   <>
     <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
@@ -77,6 +78,7 @@ const Closed = (props: CommonProps) => {
     return `【投票結果】 まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
   }
 
+  // user名またはアイコンを表示する
   return (
     <>
       <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
