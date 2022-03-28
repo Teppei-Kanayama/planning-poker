@@ -16,8 +16,8 @@ type CommonProps = {
   userId: string
 }
 
-const Voting = (props: CommonProps) => {
-  const { roomId, userId } = props
+const Voting = (props: CommonProps & {voteCount: number}) => {
+  const { roomId, roomSize, userId, voteCount } = props
 
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
@@ -36,6 +36,7 @@ const Voting = (props: CommonProps) => {
   return (
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
+      <Message PrefixIconComponent={MdHowToVote} message={`${voteCount}人/${roomSize}人 投票済み`}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
@@ -48,7 +49,8 @@ const Voted = (props: CommonProps & {voteCount: number}) => {
 
   return (
   <>
-    <Message PrefixIconComponent={MdCoffee} message={`他の人が投票を終えるまでお待ちください（${voteCount}人/${roomSize}人 投票済み）`}/>
+    <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
+    <Message PrefixIconComponent={MdCoffee} message={`${voteCount}人/${roomSize}人 投票済み`}/>
     <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
     <VoteButton disabled />
   </>)
@@ -131,7 +133,7 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
   if (myVoteCount >= 1) {
     return <Voted voteCount={voteCount} {...commonProps}/>
   }
-  return <Voting {...commonProps}/>
+  return <Voting voteCount={voteCount} {...commonProps}/>
 }
 
 export const VotingScreen = ({ userId }: {userId: string}) => {

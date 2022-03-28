@@ -1,6 +1,6 @@
 // Initialize Cloud Firestore through Firebase
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, query, where, getDocs, deleteDoc, setDoc, doc, getDoc, onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore'
+import { getFirestore, collection, query, where, getDocs, deleteDoc, setDoc, doc, getDoc, onSnapshot, QuerySnapshot, DocumentData, orderBy } from 'firebase/firestore'
 import firebase from 'firebase/compat/app'
 
 import { firebaseKeys } from './constants'
@@ -43,7 +43,7 @@ export const addVote = async (roomId: string, userId: string, point: number) => 
 
 // TODO: sortする
 export const fetchAllPoints = async (roomId: string) => {
-  const ref = query(collection(db, 'points'), where('roomId', '==', roomId))
+  const ref = query(collection(db, 'points'), where('roomId', '==', roomId), orderBy('point'))
   const querySnapshot = await getDocs(ref)
   const points: number[] = []
   querySnapshot.forEach((doc) => { points.push(doc.data().point) })
