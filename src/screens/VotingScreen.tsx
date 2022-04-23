@@ -13,11 +13,12 @@ import { LoadingScreen } from './LoadingScreen'
 type CommonProps = {
   roomId: string,
   roomSize: number,
-  userId: string
+  userId: string,
+  userIconUrl: string | undefined,
 }
 
 const Voting = (props: CommonProps & {voteCount: number}) => {
-  const { roomId, roomSize, userId, voteCount } = props
+  const { roomId, roomSize, userId, userIconUrl, voteCount } = props
 
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
@@ -27,7 +28,7 @@ const Voting = (props: CommonProps & {voteCount: number}) => {
 
   const handleClickVoteButton = async () => {
     if (temporaryPoint != null) {
-      await addVote(roomId, userId, temporaryPoint)
+      await addVote(roomId, userId, userIconUrl, temporaryPoint)
     }
   }
 
@@ -92,14 +93,10 @@ const Closed = (props: CommonProps) => {
   )
 }
 
-const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: number, userId: string}) => {
+const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string, roomSize: number, userId: string, userIconUrl: string | undefined}) => {
   const [voteCount, setVoteCount] = useState<number>()
   const [myVoteCount, setMyVoteCount] = useState<number>()
-  const commonProps = {
-    roomId: roomId,
-    roomSize: roomSize,
-    userId: userId
-  }
+  const commonProps = { roomId, roomSize, userId, userIconUrl }
 
   useEffect(
     () => {
@@ -138,7 +135,7 @@ const VotingRouter = ({ roomId, roomSize, userId }: {roomId: string, roomSize: n
   return <Voting voteCount={voteCount} {...commonProps}/>
 }
 
-export const VotingScreen = ({ userId }: {userId: string}) => {
+export const VotingScreen = ({ userId, userIconUrl }: {userId: string, userIconUrl: string | undefined}) => {
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
@@ -156,7 +153,8 @@ export const VotingScreen = ({ userId }: {userId: string}) => {
     <>
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
-      <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId}/>
+      <img src={userIconUrl} />
+      <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId} userIconUrl={userIconUrl}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
     </>
   )

@@ -26,14 +26,15 @@ export const findVote = async (roomId: string, userId: string) => {
   return docSnapshot.data()
 }
 
-export const addVote = async (roomId: string, userId: string, point: number) => {
+export const addVote = async (roomId: string, userId: string, userIconUrl: string | undefined, point: number) => {
   try {
     const docName = getDocName(roomId, userId)
     const ref = doc(db, 'points', docName)
     await setDoc(ref, {
       roomId: roomId,
       userId: userId,
-      point: point
+      point: point,
+      userIconUrl: userIconUrl
     })
   } catch (e) {
     // TODO: エラーハンドリング
