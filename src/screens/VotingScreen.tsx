@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee, MdAccountCircle } from 'react-icons/md'
+import ReactTooltip from 'react-tooltip'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
@@ -27,9 +28,14 @@ const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: str
              votedUserIconUrls.map((url) => {
                const style = { height: '2rem', margin: '0.2rem' }
                if (url === '') {
-                 return <MdAccountCircle style={style}/>
+                 return <MdAccountCircle key={url} style={style}/>
                }
-               return (<img key={url} src={url} style={style}/>)
+               return (
+                 <>
+                  <img key={url} src={url} style={style} data-tip="hello world"/>
+                  <ReactTooltip />
+                 </>
+               )
              })
            )
          : <>0人</>
