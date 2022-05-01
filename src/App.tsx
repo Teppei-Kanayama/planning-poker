@@ -9,13 +9,13 @@ import { LoadingScreen } from './screens/LoadingScreen'
 import { useSignIn } from './hooks/firebase'
 
 function App () {
-  const [userId, photoUrl, isLoading] = useSignIn()
+  const [user, isLoading] = useSignIn()
 
   if (isLoading) {
     return <LoadingScreen />
   }
 
-  if (userId == null) {
+  if (user == null) {
     return <SignInScreen/>
   }
 
@@ -24,7 +24,7 @@ function App () {
       <Routes>
         <Route path="/" element={<SetupScreen />} />
         <Route path="/create-new-room" element={<SetupScreen />} />
-        <Route path="/room" element={<VotingScreen userId={userId} userIconUrl={photoUrl}/>} />
+        <Route path="/room" element={<VotingScreen user={user}/>} />
       </Routes>
     </BrowserRouter>
   )

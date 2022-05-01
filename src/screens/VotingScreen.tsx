@@ -10,12 +10,12 @@ import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
 import { useAllPoints, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 import { LoadingScreen } from './LoadingScreen'
+import { User } from '../types'
 
 type CommonProps = {
   roomId: string,
   roomSize: number,
-  userId: string,
-  userIconUrl: string | undefined,
+  user: User,
 }
 
 const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
@@ -46,7 +46,7 @@ const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: str
 }
 
 const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
-  const { roomId, roomSize, userId, userIconUrl, votedUserIconUrls } = props
+  const { roomId, roomSize, user, votedUserIconUrls } = props
 
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
@@ -56,7 +56,7 @@ const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
 
   const handleClickVoteButton = async () => {
     if (temporaryPoint != null) {
-      await addVote(roomId, userId, userIconUrl, temporaryPoint)
+      await addVote(roomId, user.id, user.iconUrl, temporaryPoint)
     }
   }
 
@@ -73,8 +73,8 @@ const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
 }
 
 const Voted = (props: CommonProps & {votedUserIconUrls: string[]}) => {
-  const { roomSize, roomId, userId, votedUserIconUrls } = props
-  const [myPoint] = useMyPoint(roomId, userId)
+  const { roomSize, roomId, user, votedUserIconUrls } = props
+  const [myPoint] = useMyPoint(roomId, user.id)
 
   return (
   <>
@@ -86,8 +86,8 @@ const Voted = (props: CommonProps & {votedUserIconUrls: string[]}) => {
 }
 
 const Closed = (props: CommonProps) => {
-  const { roomId, userId } = props
-  const [myPoint] = useMyPoint(roomId, userId)
+  const { roomId, user } = props
+  const [myPoint] = useMyPoint(roomId, user.id)
   const [points] = useAllPoints(roomId)
 
   const onClickResetAllVotes = async () => {
@@ -120,10 +120,10 @@ const Closed = (props: CommonProps) => {
   )
 }
 
-const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string, roomSize: number, userId: string, userIconUrl: string | undefined}) => {
+const VotingRouter = ({ roomId, roomSize, user }: {roomId: string, roomSize: number, user: User}) => {
   const [votedUserIconUrls, setVotedUserIconUrls] = useState<string[]>([])
   const [myVoteCount, setMyVoteCount] = useState<number>()
-  const commonProps = { roomId, roomSize, userId, userIconUrl }
+  const commonProps = { roomId, roomSize, user }
   const voteCount = votedUserIconUrls.length
 
   useEffect(
@@ -137,7 +137,7 @@ const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string
               const data = doc.data()
               if (data.roomId === roomId) {
                 votedUrls.push(data.userIconUrl)
-                if (data.userId === userId) {
+                if (data.userId === user.id) {
                   myCount += 1
                 }
               }
@@ -163,7 +163,7 @@ const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string
   return <Voting votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
 }
 
-export const VotingScreen = ({ userId, userIconUrl }: {userId: string, userIconUrl: string | undefined}) => {
+export const VotingScreen = ({ user }: {user: User}) => {
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
@@ -181,7 +181,7 @@ export const VotingScreen = ({ userId, userIconUrl }: {userId: string, userIconU
     <>
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
-      <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} userId={userId} userIconUrl={userIconUrl}/>
+      <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} user={user}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
     </>
   )
