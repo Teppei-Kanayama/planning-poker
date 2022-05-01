@@ -17,10 +17,10 @@ export const VotedUserIcons = ({ votedUsers, roomSize }: {votedUsers: User[], ro
                  return <MdAccountCircle key={user.id} style={style}/>
                }
                return (
-                 <>
-                  <img key={user.id} src={user.iconUrl} style={style} data-tip="hello world"/>
+                 <div key={user.id}>
+                  <img src={user.iconUrl} style={style} data-tip={user.name}/>
                   <ReactTooltip />
-                 </>
+                 </div>
                )
              })
            )
