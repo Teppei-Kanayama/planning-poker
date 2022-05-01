@@ -4,6 +4,7 @@ import { getFirestore, collection, query, where, getDocs, deleteDoc, setDoc, doc
 import firebase from 'firebase/compat/app'
 
 import { firebaseKeys } from './constants'
+import { User } from '../types'
 
 initializeApp(firebaseKeys)
 
@@ -26,15 +27,16 @@ export const findVote = async (roomId: string, userId: string) => {
   return docSnapshot.data()
 }
 
-export const addVote = async (roomId: string, userId: string, userIconUrl: string | null, point: number) => {
+export const addVote = async (roomId: string, user: User, point: number) => {
   try {
-    const docName = getDocName(roomId, userId)
+    const docName = getDocName(roomId, user.id)
     const ref = doc(db, 'points', docName)
     await setDoc(ref, {
       roomId: roomId,
-      userId: userId,
       point: point,
-      userIconUrl: userIconUrl
+      userId: user.id,
+      userIconUrl: user.iconUrl,
+      userName: user.name
     })
   } catch (e) {
     // TODO: エラーハンドリング

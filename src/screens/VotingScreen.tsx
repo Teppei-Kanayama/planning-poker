@@ -21,7 +21,7 @@ const Voting = ({ room, user, votedUserIconUrls }: {room: Room, user: User, vote
 
   const handleClickVoteButton = async () => {
     if (temporaryPoint != null) {
-      await addVote(room.id, user.id, user.iconUrl, temporaryPoint)
+      await addVote(room.id, user, temporaryPoint)
     }
   }
 
