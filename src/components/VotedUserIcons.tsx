@@ -14,9 +14,8 @@ export const VotedUserIcons = ({ votedUsers, roomSize }: {votedUsers: User[], ro
                return <UserIcon key={user.id} user={user} style={{ height: '2rem', margin: '0.2rem' }}/>
              })
            )
-         : <>0人</>
+         : <>なし</>
     }
-     / {roomSize}人
     </div>
   )
 }
