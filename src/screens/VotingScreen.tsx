@@ -18,19 +18,21 @@ type CommonProps = {
 }
 
 const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
-  // TODO: urlがなかった場合
-  // TODO: まだだれも投票していなかった場合
   return (
     <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
       投票済みユーザー：
     {
-      votedUserIconUrls.map((url) => {
-        const style = { height: '2rem', margin: '0.2rem' }
-        if (url === '') {
-          return <MdAccountCircle style={style}/>
-        }
-        return (<img key={url} src={url} style={style}/>)
-      })
+       votedUserIconUrls.length > 0
+         ? (
+             votedUserIconUrls.map((url) => {
+               const style = { height: '2rem', margin: '0.2rem' }
+               if (url === '') {
+                 return <MdAccountCircle style={style}/>
+               }
+               return (<img key={url} src={url} style={style}/>)
+             })
+           )
+         : <>0人</>
     }
      / {roomSize}人
     </div>
