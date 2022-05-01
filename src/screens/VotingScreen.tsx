@@ -12,11 +12,6 @@ import { Message } from '../components/Message'
 import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
 
-type CommonProps = {
-  room: Room,
-  user: User,
-}
-
 const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
   return (
     <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
@@ -44,9 +39,7 @@ const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: str
   )
 }
 
-const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
-  const { room, user, votedUserIconUrls } = props
-
+const Voting = ({ room, user, votedUserIconUrls }: {room: Room, user: User, votedUserIconUrls: string[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
   const handleClickVoteCard = (p: number) => {
@@ -71,8 +64,7 @@ const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
   )
 }
 
-const Voted = (props: CommonProps & {votedUserIconUrls: string[]}) => {
-  const { room, user, votedUserIconUrls } = props
+const Voted = ({ room, user, votedUserIconUrls }: {room: Room, user: User, votedUserIconUrls: string[]}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
 
   return (
@@ -84,8 +76,7 @@ const Voted = (props: CommonProps & {votedUserIconUrls: string[]}) => {
   </>)
 }
 
-const Closed = (props: CommonProps) => {
-  const { room, user } = props
+const Closed = ({ room, user }: {room: Room, user: User}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
   const [points] = useAllPoints(room.id)
 
