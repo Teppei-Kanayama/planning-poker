@@ -13,3 +13,11 @@ export type Vote = {
   point: number,
   user: User,
 }
+
+export type VoteDocument = {
+  point: number,
+  roomId: number,
+  userIconUrl: string,
+  userId: string,
+  userName: string,
+}
