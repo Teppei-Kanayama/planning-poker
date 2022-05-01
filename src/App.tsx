@@ -3,7 +3,7 @@ import React from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
 import { SetupScreen } from './screens/SetupScreen'
-import { VotingScreen } from './screens/VotingScreen'
+import { VoteScreen } from './screens/VoteScreen'
 import { SignInScreen } from './screens/SignInScreen'
 import { LoadingScreen } from './screens/LoadingScreen'
 import { useSignIn } from './hooks/firebase'
@@ -24,7 +24,7 @@ function App () {
       <Routes>
         <Route path="/" element={<SetupScreen />} />
         <Route path="/create-new-room" element={<SetupScreen />} />
-        <Route path="/room" element={<VotingScreen user={user}/>} />
+        <Route path="/room" element={<VoteScreen user={user}/>} />
       </Routes>
     </BrowserRouter>
   )

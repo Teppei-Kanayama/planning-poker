@@ -91,7 +91,7 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
   )
 }
 
-const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
+const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
   const [myVoteCount, setMyVoteCount] = useState<number>()
   const voteCount = votedUsers.length
@@ -133,7 +133,7 @@ const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
   return <Voting votedUsers={votedUsers} room={room} user={user}/>
 }
 
-export const VotingScreen = ({ user }: {user: User}) => {
+export const VoteScreen = ({ user }: {user: User}) => {
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
@@ -152,7 +152,7 @@ export const VotingScreen = ({ user }: {user: User}) => {
     <>
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
-      <VotingRouter room={room} user={user}/>
+      <VoteRouter room={room} user={user}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
     </>
   )
