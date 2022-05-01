@@ -21,12 +21,23 @@ export const Closed = ({ room, user }: {room: Room, user: User}) => {
     if (votes.length === 0) {
       return ''
     }
-    const maxPoint = Math.max(...points)
-    const minPoint = Math.min(...points)
+    let maxPoint = -Infinity
+    let minPoint = Infinity
+    let minPointUser = votes[0].user
+    votes.forEach((vote) => {
+      if (vote.point > maxPoint) {
+        maxPoint = vote.point
+      }
+      if (vote.point < minPoint) {
+        minPoint = vote.point
+        minPointUser = vote.user
+      }
+    })
+
     if (maxPoint === minPoint) {
       return '【投票結果】 全員一致 🎉'
     }
-    return `【投票結果】 まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
+    return `【投票結果】 まずは${minPointUser.name}さんに話を聞いてみましょう！`
   }
 
   return (
