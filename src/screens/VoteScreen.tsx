@@ -1,95 +1,14 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
-import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
-import { FibonacciCards, VoteCards } from '../components/Cards'
-import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
-import { useAllVotes, useMyPoint } from '../hooks/points'
-import { Message } from '../components/Message'
+import { subscribeCollection } from '../data/firebase'
+import { SignOutButton } from '../components/Button'
 import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
-import { VotedUserIcons } from '../components/VotedUserIcons'
-import { UserIcon } from '../components/UserIcon'
-
-const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
-  const [temporaryPoint, setTemporaryPoint] = useState<number>()
-
-  const handleClickVoteCard = (p: number) => {
-    setTemporaryPoint(p)
-  }
-
-  const handleClickVoteButton = async () => {
-    if (temporaryPoint != null) {
-      await addVote(room.id, user, temporaryPoint)
-    }
-  }
-
-  const message = temporaryPoint == null ? '投票してください' : `投票してください（現在の選択：${temporaryPoint}）`
-
-  return (
-    <>
-      <Message PrefixIconComponent={MdHowToVote} message={message}/>
-      <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
-      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
-      <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
-    </>
-  )
-}
-
-const Voted = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
-  const [myPoint] = useMyPoint(room.id, user.id)
-
-  return (
-  <>
-    <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
-    <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
-    <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
-    <VoteButton disabled />
-  </>)
-}
-
-const Closed = ({ room, user }: {room: Room, user: User}) => {
-  const [myPoint] = useMyPoint(room.id, user.id)
-  const [votes] = useAllVotes(room.id)
-  const points = votes.map((vote) => vote.point)
-
-  const onClickResetAllVotes = async () => {
-    await deleteAllVotes(room.id)
-  }
-
-  const getMessage = () => {
-    if (votes.length === 0) {
-      return ''
-    }
-    const maxPoint = Math.max(...points)
-    const minPoint = Math.min(...points)
-    if (maxPoint === minPoint) {
-      return '【投票結果】 全員一致 🎉'
-    }
-    return `【投票結果】 まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
-  }
-
-  return (
-    <>
-      <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
-      <VoteButton disabled />
-      <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
-        {getMessage()}
-      </p>
-      <div style={{ display: 'flex', marginLeft: '1rem' }}>
-        {
-          votes.map((vote) => {
-            return <UserIcon key={vote.user.id} user={vote.user} style={{ height: '3rem', marginLeft: '0.5rem', marginRight: '0.5rem' }}/>
-          })
-        }
-      </div>
-      <VoteCards points={points} disabled/>
-      <ResetButton onClick={onClickResetAllVotes} />
-    </>
-  )
-}
+import { Closed } from './vote/Closed'
+import { Voted } from './vote/Voted'
+import { Voting } from './vote/Voting'
 
 const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
