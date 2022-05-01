@@ -8,3 +8,8 @@ export type Room = {
   id: string,
   size: number,
 }
+
+export type Vote = {
+  point: number,
+  user: User,
+}

@@ -4,13 +4,14 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
-import { FibonacciCards, VoteCards } from '../components/Cards'
+import { FibonacciCards } from '../components/Cards'
 import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
-import { useAllPoints, useMyPoint } from '../hooks/points'
+import { useAllVotes, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
 import { VotedUserIcons } from '../components/VotedUserIcons'
+import { VoteResult } from '../components/VoteResult'
 
 const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
@@ -51,16 +52,17 @@ const Voted = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: 
 
 const Closed = ({ room, user }: {room: Room, user: User}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
-  const [points] = useAllPoints(room.id)
+  const [votes] = useAllVotes(room.id)
 
   const onClickResetAllVotes = async () => {
     await deleteAllVotes(room.id)
   }
 
   const getMessage = () => {
-    if (points.length === 0) {
+    if (votes.length === 0) {
       return ''
     }
+    const points = votes.map((vote) => vote.point)
     const maxPoint = Math.max(...points)
     const minPoint = Math.min(...points)
     if (maxPoint === minPoint) {
@@ -77,7 +79,7 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         {getMessage()}
       </p>
-      <VoteCards points={points} disabled/>
+      <VoteResult votes={votes}/>
       <ResetButton onClick={onClickResetAllVotes} />
     </>
   )

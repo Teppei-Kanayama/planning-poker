@@ -4,7 +4,7 @@ import { getFirestore, collection, query, where, getDocs, deleteDoc, setDoc, doc
 import firebase from 'firebase/compat/app'
 
 import { firebaseKeys } from './constants'
-import { User } from '../types'
+import { User, Vote } from '../types'
 
 initializeApp(firebaseKeys)
 
@@ -44,11 +44,14 @@ export const addVote = async (roomId: string, user: User, point: number) => {
   }
 }
 
-export const fetchAllPoints = async (roomId: string) => {
+export const fetchAllVotes = async (roomId: string) => {
   const ref = query(collection(db, 'points'), where('roomId', '==', roomId), orderBy('point'))
   const querySnapshot = await getDocs(ref)
-  const points: number[] = []
-  querySnapshot.forEach((doc) => { points.push(doc.data().point) })
+  const points: Vote[] = []
+  querySnapshot.forEach((doc) => {
+    const data = doc.data()
+    points.push({ point: data.point, user: { id: data.userId, iconUrl: data.userIconUrl, name: data.userName } })
+  })
   return points
 }
 

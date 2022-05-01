@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { fetchAllPoints, findVote } from '../data/firebase'
+import { fetchAllVotes, findVote } from '../data/firebase'
+import { Vote } from '../types'
 
 // 自分が投票したポイントを管理するカスタムフック
 export const useMyPoint = (roomId: string, userId: string) => {
@@ -20,16 +21,16 @@ export const useMyPoint = (roomId: string, userId: string) => {
   return [myPoint] as const
 }
 
-export const useAllPoints = (roomId: string) => {
-  const [points, setPoints] = useState<number[]>([])
+export const useAllVotes = (roomId: string) => {
+  const [votes, setVotes] = useState<Vote[]>([])
 
   useEffect(() => {
-    const setAllPoints = async () => {
-      const allPoints = await fetchAllPoints(roomId)
-      setPoints(allPoints)
+    const setAllVotes = async () => {
+      const allVotes = await fetchAllVotes(roomId)
+      setVotes(allVotes)
     }
-    setAllPoints()
+    setAllVotes()
   }, [])
 
-  return [points] as const
+  return [votes] as const
 }
