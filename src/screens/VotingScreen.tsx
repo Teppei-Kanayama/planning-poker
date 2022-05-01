@@ -4,14 +4,14 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
-import { FibonacciCards } from '../components/Cards'
+import { FibonacciCards, VoteCards } from '../components/Cards'
 import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
 import { useAllVotes, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
 import { VotedUserIcons } from '../components/VotedUserIcons'
-import { VoteResult } from '../components/VoteResult'
+import { UserIcon } from '../components/UserIcon'
 
 const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
@@ -53,6 +53,7 @@ const Voted = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: 
 const Closed = ({ room, user }: {room: Room, user: User}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
   const [votes] = useAllVotes(room.id)
+  const points = votes.map((vote) => vote.point)
 
   const onClickResetAllVotes = async () => {
     await deleteAllVotes(room.id)
@@ -62,7 +63,6 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
     if (votes.length === 0) {
       return ''
     }
-    const points = votes.map((vote) => vote.point)
     const maxPoint = Math.max(...points)
     const minPoint = Math.min(...points)
     if (maxPoint === minPoint) {
@@ -71,7 +71,6 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
     return `【投票結果】 まずは${minPoint}ポイントに投票した人に話を聞いてみましょう！`
   }
 
-  // TODO: 各投票とアイコンを並べて表示する
   return (
     <>
       <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
@@ -79,7 +78,14 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         {getMessage()}
       </p>
-      <VoteResult votes={votes}/>
+      <div style={{ display: 'flex', marginLeft: '1rem' }}>
+        {
+          votes.map((vote) => {
+            return <UserIcon key={vote.user.id} user={vote.user} style={{ height: '3rem', marginLeft: '0.5rem', marginRight: '0.5rem' }}/>
+          })
+        }
+      </div>
+      <VoteCards points={points} disabled/>
       <ResetButton onClick={onClickResetAllVotes} />
     </>
   )
