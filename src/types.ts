@@ -3,3 +3,8 @@ export type User = {
   iconUrl: string | null,
   name: string | null,
 }
+
+export type Room = {
+  id: string,
+  size: number,
+}

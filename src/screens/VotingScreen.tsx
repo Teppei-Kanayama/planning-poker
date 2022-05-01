@@ -10,11 +10,10 @@ import { ResetButton, SignOutButton, VoteButton } from '../components/Button'
 import { useAllPoints, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 import { LoadingScreen } from './LoadingScreen'
-import { User } from '../types'
+import { Room, User } from '../types'
 
 type CommonProps = {
-  roomId: string,
-  roomSize: number,
+  room: Room,
   user: User,
 }
 
@@ -46,7 +45,7 @@ const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: str
 }
 
 const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
-  const { roomId, roomSize, user, votedUserIconUrls } = props
+  const { room, user, votedUserIconUrls } = props
 
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
@@ -56,7 +55,7 @@ const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
 
   const handleClickVoteButton = async () => {
     if (temporaryPoint != null) {
-      await addVote(roomId, user.id, user.iconUrl, temporaryPoint)
+      await addVote(room.id, user.id, user.iconUrl, temporaryPoint)
     }
   }
 
@@ -65,7 +64,7 @@ const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
   return (
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
-      <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={roomSize}/>
+      <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={room.size}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
@@ -73,25 +72,25 @@ const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
 }
 
 const Voted = (props: CommonProps & {votedUserIconUrls: string[]}) => {
-  const { roomSize, roomId, user, votedUserIconUrls } = props
-  const [myPoint] = useMyPoint(roomId, user.id)
+  const { room, user, votedUserIconUrls } = props
+  const [myPoint] = useMyPoint(room.id, user.id)
 
   return (
   <>
     <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
-    <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={roomSize}/>
+    <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={room.size}/>
     <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
     <VoteButton disabled />
   </>)
 }
 
 const Closed = (props: CommonProps) => {
-  const { roomId, user } = props
-  const [myPoint] = useMyPoint(roomId, user.id)
-  const [points] = useAllPoints(roomId)
+  const { room, user } = props
+  const [myPoint] = useMyPoint(room.id, user.id)
+  const [points] = useAllPoints(room.id)
 
   const onClickResetAllVotes = async () => {
-    await deleteAllVotes(roomId)
+    await deleteAllVotes(room.id)
   }
 
   const getMessage = () => {
@@ -120,10 +119,10 @@ const Closed = (props: CommonProps) => {
   )
 }
 
-const VotingRouter = ({ roomId, roomSize, user }: {roomId: string, roomSize: number, user: User}) => {
+const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUserIconUrls, setVotedUserIconUrls] = useState<string[]>([])
   const [myVoteCount, setMyVoteCount] = useState<number>()
-  const commonProps = { roomId, roomSize, user }
+  const commonProps = { room, user }
   const voteCount = votedUserIconUrls.length
 
   useEffect(
@@ -135,7 +134,7 @@ const VotingRouter = ({ roomId, roomSize, user }: {roomId: string, roomSize: num
           querySnapshot.forEach(
             (doc) => {
               const data = doc.data()
-              if (data.roomId === roomId) {
+              if (data.roomId === room.id) {
                 votedUrls.push(data.userIconUrl)
                 if (data.userId === user.id) {
                   myCount += 1
@@ -154,7 +153,7 @@ const VotingRouter = ({ roomId, roomSize, user }: {roomId: string, roomSize: num
   if (voteCount == null || myVoteCount == null) {
     return <LoadingScreen />
   }
-  if (voteCount >= roomSize) {
+  if (voteCount >= room.size) {
     return <Closed {...commonProps}/>
   }
   if (myVoteCount >= 1) {
@@ -176,12 +175,13 @@ export const VotingScreen = ({ user }: {user: User}) => {
       </h1>
     )
   }
+  const room = { id: roomId, size: parseInt(roomSizeString) }
 
   return (
     <>
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
-      <VotingRouter roomId={roomId} roomSize={parseInt(roomSizeString)} user={user}/>
+      <VotingRouter room={room} user={user}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
     </>
   )
