@@ -86,7 +86,6 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
 const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
   const [myVoteCount, setMyVoteCount] = useState<number>()
-  const commonProps = { room, user }
   const voteCount = votedUsers.length
 
   useEffect(
@@ -118,12 +117,12 @@ const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
     return <LoadingScreen />
   }
   if (voteCount >= room.size) {
-    return <Closed {...commonProps}/>
+    return <Closed room={room} user={user} />
   }
   if (myVoteCount >= 1) {
-    return <Voted votedUsers={votedUsers} {...commonProps}/>
+    return <Voted votedUsers={votedUsers} room={room} user={user}/>
   }
-  return <Voting votedUsers={votedUsers} {...commonProps}/>
+  return <Voting votedUsers={votedUsers} room={room} user={user}/>
 }
 
 export const VotingScreen = ({ user }: {user: User}) => {
