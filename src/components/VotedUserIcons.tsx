@@ -2,22 +2,23 @@
 import React from 'react'
 import { MdAccountCircle } from 'react-icons/md'
 import ReactTooltip from 'react-tooltip'
+import { User } from '../types'
 
-export const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
+export const VotedUserIcons = ({ votedUsers, roomSize }: {votedUsers: User[], roomSize: number}) => {
   return (
     <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
       投票済みユーザー：
     {
-       votedUserIconUrls.length > 0
+       votedUsers.length > 0
          ? (
-             votedUserIconUrls.map((url) => {
+             votedUsers.map((user) => {
                const style = { height: '2rem', margin: '0.2rem' }
-               if (url === '') {
-                 return <MdAccountCircle key={url} style={style}/>
+               if (user.iconUrl == null) {
+                 return <MdAccountCircle key={user.id} style={style}/>
                }
                return (
                  <>
-                  <img key={url} src={url} style={style} data-tip="hello world"/>
+                  <img key={user.id} src={user.iconUrl} style={style} data-tip="hello world"/>
                   <ReactTooltip />
                  </>
                )

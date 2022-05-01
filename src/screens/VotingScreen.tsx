@@ -12,7 +12,7 @@ import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
 import { VotedUserIcons } from '../components/VotedUserIcons'
 
-const Voting = ({ room, user, votedUserIconUrls }: {room: Room, user: User, votedUserIconUrls: string[]}) => {
+const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
   const handleClickVoteCard = (p: number) => {
@@ -30,20 +30,20 @@ const Voting = ({ room, user, votedUserIconUrls }: {room: Room, user: User, vote
   return (
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
-      <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={room.size}/>
+      <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
   )
 }
 
-const Voted = ({ room, user, votedUserIconUrls }: {room: Room, user: User, votedUserIconUrls: string[]}) => {
+const Voted = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
 
   return (
   <>
     <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
-    <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={room.size}/>
+    <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
     <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
     <VoteButton disabled />
   </>)
@@ -84,29 +84,29 @@ const Closed = ({ room, user }: {room: Room, user: User}) => {
 }
 
 const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
-  const [votedUserIconUrls, setVotedUserIconUrls] = useState<string[]>([])
+  const [votedUsers, setVotedUsers] = useState<User[]>([])
   const [myVoteCount, setMyVoteCount] = useState<number>()
   const commonProps = { room, user }
-  const voteCount = votedUserIconUrls.length
+  const voteCount = votedUsers.length
 
   useEffect(
     () => {
       const unsubscribe = subscribeCollection(
         (querySnapshot) => {
           let myCount = 0
-          const votedUrls: string[] = []
+          const votedUsersArray: User[] = []
           querySnapshot.forEach(
             (doc) => {
               const data = doc.data()
               if (data.roomId === room.id) {
-                votedUrls.push(data.userIconUrl)
+                votedUsersArray.push({ id: data.userId, iconUrl: data.userIconUrl, name: data.userName })
                 if (data.userId === user.id) {
                   myCount += 1
                 }
               }
             }
           )
-          setVotedUserIconUrls(votedUrls)
+          setVotedUsers(votedUsersArray)
           setMyVoteCount(myCount)
         }
       )
@@ -121,9 +121,9 @@ const VotingRouter = ({ room, user }: {room: Room, user: User}) => {
     return <Closed {...commonProps}/>
   }
   if (myVoteCount >= 1) {
-    return <Voted votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
+    return <Voted votedUsers={votedUsers} {...commonProps}/>
   }
-  return <Voting votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
+  return <Voting votedUsers={votedUsers} {...commonProps}/>
 }
 
 export const VotingScreen = ({ user }: {user: User}) => {
