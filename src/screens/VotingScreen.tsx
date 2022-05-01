@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { MdHowToVote, MdCoffee } from 'react-icons/md'
+import { MdHowToVote, MdCoffee, MdAccountCircle } from 'react-icons/md'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
@@ -25,7 +25,11 @@ const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: str
       投票済みユーザー：
     {
       votedUserIconUrls.map((url) => {
-        return (<img key={url} src={url} style={{ height: '2rem', margin: '0.2rem' }}/>)
+        const style = { height: '2rem', margin: '0.2rem' }
+        if (url === '') {
+          return <MdAccountCircle style={style}/>
+        }
+        return (<img key={url} src={url} style={style}/>)
       })
     }
      / {roomSize}人
