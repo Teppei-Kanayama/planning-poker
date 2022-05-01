@@ -17,6 +17,21 @@ type CommonProps = {
   userIconUrl: string | undefined,
 }
 
+const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
+  votedUserIconUrls.push(votedUserIconUrls[0])
+  return (
+    <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
+      投票済みユーザー：
+    {
+      votedUserIconUrls.map((url) => {
+        return (<img key={url} src={url} style={{ height: '2rem', margin: '0.2rem' }}/>)
+      })
+    }
+     / {roomSize}人
+    </div>
+  )
+}
+
 const Voting = (props: CommonProps & {voteCount: number, votedUserIconUrls: string[]}) => {
   const { roomId, roomSize, userId, userIconUrl, voteCount, votedUserIconUrls } = props
 
@@ -40,12 +55,7 @@ const Voting = (props: CommonProps & {voteCount: number, votedUserIconUrls: stri
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
       <Message PrefixIconComponent={MdHowToVote} message={`${voteCount}人/${roomSize}人 投票済み`}/>
-      {/* TODO: ここにうまいこと投票済みアイコンを表示する */}
-      {
-        votedUserIconUrls.map((url) => {
-          return (<img key={url} src={url} />)
-        })
-      }
+      <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={roomSize}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
@@ -60,12 +70,7 @@ const Voted = (props: CommonProps & {voteCount: number, votedUserIconUrls: strin
   <>
     <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
     <Message PrefixIconComponent={MdCoffee} message={`${voteCount}人/${roomSize}人 投票済み`}/>
-    {/* TODO: ここにうまいこと投票済みアイコンを表示する */}
-    {
-        votedUserIconUrls.map((url) => {
-          return (<img key={url} src={url} />)
-        })
-      }
+    <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={roomSize}/>
     <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
     <VoteButton disabled />
   </>)
