@@ -18,7 +18,8 @@ type CommonProps = {
 }
 
 const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
-  votedUserIconUrls.push(votedUserIconUrls[0])
+  // TODO: urlがなかった場合
+  // TODO: まだだれも投票していなかった場合
   return (
     <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
       投票済みユーザー：
@@ -32,8 +33,8 @@ const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: str
   )
 }
 
-const Voting = (props: CommonProps & {voteCount: number, votedUserIconUrls: string[]}) => {
-  const { roomId, roomSize, userId, userIconUrl, voteCount, votedUserIconUrls } = props
+const Voting = (props: CommonProps & {votedUserIconUrls: string[]}) => {
+  const { roomId, roomSize, userId, userIconUrl, votedUserIconUrls } = props
 
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
 
@@ -49,12 +50,9 @@ const Voting = (props: CommonProps & {voteCount: number, votedUserIconUrls: stri
 
   const message = temporaryPoint == null ? '投票してください' : `投票してください（現在の選択：${temporaryPoint}）`
 
-  console.log(votedUserIconUrls)
-
   return (
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
-      <Message PrefixIconComponent={MdHowToVote} message={`${voteCount}人/${roomSize}人 投票済み`}/>
       <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={roomSize}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
       <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
@@ -62,14 +60,13 @@ const Voting = (props: CommonProps & {voteCount: number, votedUserIconUrls: stri
   )
 }
 
-const Voted = (props: CommonProps & {voteCount: number, votedUserIconUrls: string[]}) => {
-  const { roomSize, voteCount, roomId, userId, votedUserIconUrls } = props
+const Voted = (props: CommonProps & {votedUserIconUrls: string[]}) => {
+  const { roomSize, roomId, userId, votedUserIconUrls } = props
   const [myPoint] = useMyPoint(roomId, userId)
 
   return (
   <>
     <Message PrefixIconComponent={MdCoffee} message={'他の人が投票を終えるまでお待ちください'}/>
-    <Message PrefixIconComponent={MdCoffee} message={`${voteCount}人/${roomSize}人 投票済み`}/>
     <VotedUserIcons votedUserIconUrls={votedUserIconUrls} roomSize={roomSize}/>
     <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
     <VoteButton disabled />
@@ -112,23 +109,21 @@ const Closed = (props: CommonProps) => {
 }
 
 const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string, roomSize: number, userId: string, userIconUrl: string | undefined}) => {
-  const [voteCount, setVoteCount] = useState<number>()
   const [votedUserIconUrls, setVotedUserIconUrls] = useState<string[]>([])
   const [myVoteCount, setMyVoteCount] = useState<number>()
   const commonProps = { roomId, roomSize, userId, userIconUrl }
+  const voteCount = votedUserIconUrls.length
 
   useEffect(
     () => {
       const unsubscribe = subscribeCollection(
         (querySnapshot) => {
-          let count = 0
           let myCount = 0
           const votedUrls: string[] = []
           querySnapshot.forEach(
             (doc) => {
               const data = doc.data()
               if (data.roomId === roomId) {
-                count += 1
                 votedUrls.push(data.userIconUrl)
                 if (data.userId === userId) {
                   myCount += 1
@@ -136,7 +131,6 @@ const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string
               }
             }
           )
-          setVoteCount(count)
           setVotedUserIconUrls(votedUrls)
           setMyVoteCount(myCount)
         }
@@ -152,9 +146,9 @@ const VotingRouter = ({ roomId, roomSize, userId, userIconUrl }: {roomId: string
     return <Closed {...commonProps}/>
   }
   if (myVoteCount >= 1) {
-    return <Voted voteCount={voteCount} votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
+    return <Voted votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
   }
-  return <Voting voteCount={voteCount} votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
+  return <Voting votedUserIconUrls={votedUserIconUrls} {...commonProps}/>
 }
 
 export const VotingScreen = ({ userId, userIconUrl }: {userId: string, userIconUrl: string | undefined}) => {
