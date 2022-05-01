@@ -1,8 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { MdHowToVote, MdCoffee, MdAccountCircle } from 'react-icons/md'
-import ReactTooltip from 'react-tooltip'
+import { MdHowToVote, MdCoffee } from 'react-icons/md'
 
 import { addVote, deleteAllVotes, subscribeCollection } from '../data/firebase'
 import { FibonacciCards, VoteCards } from '../components/Cards'
@@ -11,33 +10,7 @@ import { useAllPoints, useMyPoint } from '../hooks/points'
 import { Message } from '../components/Message'
 import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
-
-const VotedUserIcons = ({ votedUserIconUrls, roomSize }: {votedUserIconUrls: string[], roomSize: number}) => {
-  return (
-    <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
-      投票済みユーザー：
-    {
-       votedUserIconUrls.length > 0
-         ? (
-             votedUserIconUrls.map((url) => {
-               const style = { height: '2rem', margin: '0.2rem' }
-               if (url === '') {
-                 return <MdAccountCircle key={url} style={style}/>
-               }
-               return (
-                 <>
-                  <img key={url} src={url} style={style} data-tip="hello world"/>
-                  <ReactTooltip />
-                 </>
-               )
-             })
-           )
-         : <>0人</>
-    }
-     / {roomSize}人
-    </div>
-  )
-}
+import { VotedUserIcons } from '../components/VotedUserIcons'
 
 const Voting = ({ room, user, votedUserIconUrls }: {room: Room, user: User, votedUserIconUrls: string[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
