@@ -1,8 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React from 'react'
-import { MdAccountCircle } from 'react-icons/md'
-import ReactTooltip from 'react-tooltip'
 import { User } from '../types'
+import { UserIcon } from './UserIcon'
 
 export const VotedUserIcons = ({ votedUsers, roomSize }: {votedUsers: User[], roomSize: number}) => {
   return (
@@ -12,16 +11,7 @@ export const VotedUserIcons = ({ votedUsers, roomSize }: {votedUsers: User[], ro
        votedUsers.length > 0
          ? (
              votedUsers.map((user) => {
-               const style = { height: '2rem', margin: '0.2rem' }
-               if (user.iconUrl == null) {
-                 return <MdAccountCircle key={user.id} style={style}/>
-               }
-               return (
-                 <div key={user.id}>
-                  <img src={user.iconUrl} style={style} data-tip={user.name}/>
-                  <ReactTooltip />
-                 </div>
-               )
+               return <UserIcon key={user.id} user={user} style={{ height: '2rem', margin: '0.2rem' }}/>
              })
            )
          : <>0人</>
