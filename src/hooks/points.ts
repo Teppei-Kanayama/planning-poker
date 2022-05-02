@@ -11,7 +11,6 @@ export const useMyPoint = (roomId: string, userId: string) => {
     const setExistingPoint = async () => {
       const vote = await findVote(roomId, userId)
       if (vote != null) {
-        // TODO: pointがanyになってしまっている
         setMyPoint(vote.point)
       }
     }

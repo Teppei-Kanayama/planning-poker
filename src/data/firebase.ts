@@ -40,12 +40,12 @@ const getDocName = (roomId:string, userId: string) => {
 export const signOut = () => firebase.auth().signOut()
 
 export const subscribeCollection = (callback: (doc: QuerySnapshot<DocumentData>) => void) => {
-  return onSnapshot(collection(db, 'points'), callback)
+  return onSnapshot(collection(db, 'votes'), callback)
 }
 
 export const findVote = async (roomId: string, userId: string) => {
   const docName = getDocName(roomId, userId)
-  const ref = doc(db, 'points', docName).withConverter(voteConverter)
+  const ref = doc(db, 'votes', docName).withConverter(voteConverter)
   const docSnapshot = await getDoc(ref)
   return docSnapshot.data()
 }
@@ -53,7 +53,7 @@ export const findVote = async (roomId: string, userId: string) => {
 export const addVote = async (roomId: string, user: User, point: number) => {
   try {
     const docName = getDocName(roomId, user.id)
-    const ref = doc(db, 'points', docName).withConverter(voteConverter)
+    const ref = doc(db, 'votes', docName).withConverter(voteConverter)
     await setDoc(ref, {
       roomId: roomId,
       point: point,
@@ -68,18 +68,18 @@ export const addVote = async (roomId: string, user: User, point: number) => {
 }
 
 export const fetchAllVotes = async (roomId: string) => {
-  const ref = query(collection(db, 'points'), where('roomId', '==', roomId), orderBy('point')).withConverter(voteConverter)
+  const ref = query(collection(db, 'votes'), where('roomId', '==', roomId), orderBy('point')).withConverter(voteConverter)
   const querySnapshot = await getDocs(ref)
-  const points: Vote[] = []
+  const votes: Vote[] = []
   querySnapshot.forEach((doc) => {
     const data = doc.data()
-    points.push({ point: data.point, user: { id: data.userId, iconUrl: data.userIconUrl, name: data.userName } })
+    votes.push({ point: data.point, user: { id: data.userId, iconUrl: data.userIconUrl, name: data.userName } })
   })
-  return points
+  return votes
 }
 
 export const deleteAllVotes = async (roomId: string) => {
-  const ref = query(collection(db, 'points'), where('roomId', '==', roomId)).withConverter(voteConverter)
+  const ref = query(collection(db, 'votes'), where('roomId', '==', roomId)).withConverter(voteConverter)
   const querySnapshot = await getDocs(ref)
   querySnapshot.forEach(
     (doc) => {
