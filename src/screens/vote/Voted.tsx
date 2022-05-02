@@ -4,7 +4,7 @@ import { MdCoffee } from 'react-icons/md'
 
 import { FibonacciCards } from '../../components/Cards'
 import { VoteButton } from '../../components/Button'
-import { useMyPoint } from '../../hooks/points'
+import { useMyPoint } from '../../hooks/votes'
 import { Message } from '../../components/Message'
 import { Room, User } from '../../types'
 import { VotedUserIcons } from '../../components/VotedUserIcons'

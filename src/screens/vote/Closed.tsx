@@ -4,7 +4,7 @@ import React from 'react'
 import { deleteAllVotes } from '../../data/firebase'
 import { FibonacciCards, VoteCards } from '../../components/Cards'
 import { ResetButton, VoteButton } from '../../components/Button'
-import { useAllVotes, useMyPoint } from '../../hooks/points'
+import { useAllVotes, useMyPoint } from '../../hooks/votes'
 import { Room, User } from '../../types'
 import { UserIcon } from '../../components/UserIcon'
 
