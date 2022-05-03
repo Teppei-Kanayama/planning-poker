@@ -50,7 +50,7 @@ export const findVote = async (roomId: string, userId: string) => {
   return docSnapshot.data()
 }
 
-export const addVote = async (roomId: string, user: User, point: number) => {
+export const addVote = async (roomId: string, user: User, point: number, onError: () => void) => {
   try {
     const docName = getDocName(roomId, user.id)
     const ref = doc(db, 'votes', docName).withConverter(voteConverter)
@@ -61,8 +61,9 @@ export const addVote = async (roomId: string, user: User, point: number) => {
       userIconUrl: user.iconUrl,
       userName: user.name
     })
+    throw new Error('Required')
   } catch (e) {
-    // TODO: エラーハンドリング
+    onError()
     console.error('Error adding document: ', e)
   }
 }

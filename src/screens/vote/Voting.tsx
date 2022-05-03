@@ -16,13 +16,16 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
 
   const handleClickVoteCard = (p: number) => {
     setTemporaryPoint(p)
-    setMessage('あいうえお')
-    setIsOpen(true)
   }
 
   const handleClickVoteButton = async () => {
+    const handleError = () => {
+      setMessage('通信エラーが発生しました。もう一度やり直してください。')
+      setIsOpen(true)
+    }
+
     if (temporaryPoint != null) {
-      await addVote(room.id, user, temporaryPoint)
+      await addVote(room.id, user, temporaryPoint, handleError)
     }
   }
 
