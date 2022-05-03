@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { MdHowToVote } from 'react-icons/md'
 
 import { addVote } from '../../data/firebase'
@@ -10,20 +10,16 @@ import { useAlertContext } from '../../hooks/alert'
 import { useMyPoint } from '../../hooks/votes'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
-  const [temporaryPoint, setTemporaryPoint] = useState<number>()
   const [myPoint] = useMyPoint(room.id, user.id)
   const { setAlert, resetAlert } = useAlertContext()
 
   const handleClickVoteCard = async (p: number) => {
-    setTemporaryPoint(p)
     await addVote(room.id, user, p, setAlert, resetAlert)
   }
 
-  const message = temporaryPoint == null ? '投票してください' : `投票してください（現在の選択：${temporaryPoint}）`
-
   return (
     <>
-      <Message PrefixIconComponent={MdHowToVote} message={message}/>
+      <Message PrefixIconComponent={MdHowToVote} message='投票受付中' />
       <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true} myPoint={myPoint}/>
     </>
