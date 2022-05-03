@@ -4,14 +4,6 @@ import Button from 'react-bootstrap/Button'
 import { useAlertContext } from '../hooks/alert'
 import { signOut, deleteAllVotes } from '../data/firebase'
 
-export const VoteButton = (props: {onClick?: () => void, disabled?: boolean}) => {
-  return (
-    <Button {...props} variant='primary' style={{ marginLeft: '1rem', marginBottom: '1rem', display: 'flex' }}>
-      投票
-    </Button>
-  )
-}
-
 export const ResetButton = ({ roomId }: {roomId: string}) => {
   const { setAlert, resetAlert } = useAlertContext()
 
