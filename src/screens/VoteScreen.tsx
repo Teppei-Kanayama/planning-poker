@@ -9,6 +9,7 @@ import { Room, User } from '../types'
 import { Closed } from './vote/Closed'
 import { Voted } from './vote/Voted'
 import { Voting } from './vote/Voting'
+import { Alert } from 'react-bootstrap'
 
 const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
@@ -71,6 +72,9 @@ export const VoteScreen = ({ user }: {user: User}) => {
     <>
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
+      <Alert variant='danger'>
+        通信エラーが発生しました。もう一度やり直してください。
+      </Alert>
       <VoteRouter room={room} user={user}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
     </>
