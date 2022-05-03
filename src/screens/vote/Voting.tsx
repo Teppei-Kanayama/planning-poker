@@ -22,16 +22,16 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
     <>
       <Message PrefixIconComponent={MdHowToVote} message='投票受付中' />
       <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
-      投票済みユーザー：
-      {
-        votedUsers.length > 0
-          ? (
-              votedUsers.map((user) => {
-                return <UserIcon key={user.id} user={user} style={{ height: '2rem', margin: '0.2rem' }}/>
-              })
-            )
-          : <>なし</>
-      }
+        投票済みユーザー：
+        {
+          votedUsers.length > 0
+            ? (
+                votedUsers.map((user) => {
+                  return <UserIcon key={user.id} user={user} style={{ height: '2rem', margin: '0.2rem' }}/>
+                })
+              )
+            : <>なし</>
+        }
       </div>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true} myPoint={myPoint}/>
       <ResetButton roomId={room.id} />
