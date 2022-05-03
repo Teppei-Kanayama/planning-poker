@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 import { subscribeCollection } from '../data/firebase'
@@ -9,7 +9,27 @@ import { Room, User } from '../types'
 import { Closed } from './vote/Closed'
 import { Voted } from './vote/Voted'
 import { Voting } from './vote/Voting'
-import { Alert } from 'react-bootstrap'
+import { CustomAlert } from '../components/Alert'
+
+type AlertContextType = {
+  message: string,
+  setMessage: Function,
+  isOpen: boolean,
+  setIsOpen: Function,
+}
+
+export const AlertContext = createContext<AlertContextType>({ message: '', setMessage: () => {}, isOpen: false, setIsOpen: () => {} })
+
+export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
+  const [message, setMessage] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <AlertContext.Provider value={{ message, setMessage, isOpen, setIsOpen }}>
+      {children}
+    </AlertContext.Provider>
+  )
+}
 
 const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
@@ -69,14 +89,12 @@ export const VoteScreen = ({ user }: {user: User}) => {
   const room = { id: roomId, size: parseInt(roomSizeString) }
 
   return (
-    <>
+    <AlertProvider>
       <SignOutButton />
       <h1 style={{ justifyContent: 'center', display: 'flex', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
-      <Alert variant='danger'>
-        通信エラーが発生しました。もう一度やり直してください。
-      </Alert>
+      <CustomAlert />
       <VoteRouter room={room} user={user}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
-    </>
+    </AlertProvider>
   )
 }
