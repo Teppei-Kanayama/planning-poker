@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { MdHowToVote } from 'react-icons/md'
 
 import { addVote } from '../../data/firebase'
@@ -8,11 +8,11 @@ import { VoteButton } from '../../components/Button'
 import { Message } from '../../components/Message'
 import { Room, User } from '../../types'
 import { VotedUserIcons } from '../../components/VotedUserIcons'
-import { AlertContext } from '../VoteScreen'
+import { useAlertContext } from '../../hooks/alert'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
-  const { setAlertType } = useContext(AlertContext)
+  const { setAlertType } = useAlertContext()
 
   const handleClickVoteCard = (p: number) => {
     setTemporaryPoint(p)

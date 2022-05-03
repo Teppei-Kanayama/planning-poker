@@ -1,10 +1,10 @@
 /* eslint-disable no-use-before-define */
-import React, { useContext } from 'react'
+import React from 'react'
 import { Alert } from 'react-bootstrap'
-import { AlertContext } from '../screens/VoteScreen'
+import { useAlertContext } from '../hooks/alert'
 
 export const CustomAlert: React.VFC = () => {
-  const { alertType } = useContext(AlertContext)
+  const { alertType } = useAlertContext()
   if (alertType === 'OtherErrors') {
     return (
       <Alert variant='danger'>

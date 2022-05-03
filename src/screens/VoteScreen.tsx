@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 import { subscribeCollection } from '../data/firebase'
@@ -10,25 +10,7 @@ import { Closed } from './vote/Closed'
 import { Voted } from './vote/Voted'
 import { Voting } from './vote/Voting'
 import { CustomAlert } from '../components/Alert'
-
-type AlertType = 'OtherErrors' | null // TODO: ここにエラーの種類を足していく
-
-type AlertContextType = {
-  alertType: AlertType
-  setAlertType: (alertType: AlertType) => void
-}
-
-export const AlertContext = createContext<AlertContextType>({ alertType: null, setAlertType: () => {} })
-
-export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
-  const [alertType, setAlertType] = useState<AlertType>(null)
-
-  return (
-    <AlertContext.Provider value={{ alertType, setAlertType }}>
-      {children}
-    </AlertContext.Provider>
-  )
-}
+import { AlertProvider } from '../hooks/alert'
 
 const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
