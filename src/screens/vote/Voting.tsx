@@ -7,9 +7,11 @@ import { Message } from '../../components/Message'
 import { Room, User } from '../../types'
 import { VotedUserIcons } from '../../components/VotedUserIcons'
 import { useAlertContext } from '../../hooks/alert'
+import { useMyPoint } from '../../hooks/votes'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
+  const [myPoint] = useMyPoint(room.id, user.id)
   const { setAlert, resetAlert } = useAlertContext()
 
   const handleClickVoteCard = async (p: number) => {
@@ -23,7 +25,7 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
     <>
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
       <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
-      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
+      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true} myPoint={myPoint}/>
     </>
   )
 }
