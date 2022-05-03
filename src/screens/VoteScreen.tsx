@@ -11,21 +11,20 @@ import { Voted } from './vote/Voted'
 import { Voting } from './vote/Voting'
 import { CustomAlert } from '../components/Alert'
 
+type AlertType = 'OtherErrors' | null // TODO: ここにエラーの種類を足していく
+
 type AlertContextType = {
-  message: string,
-  setMessage: Function,
-  isOpen: boolean,
-  setIsOpen: Function,
+  alertType: AlertType
+  setAlertType: (alertType: AlertType) => void
 }
 
-export const AlertContext = createContext<AlertContextType>({ message: '', setMessage: () => {}, isOpen: false, setIsOpen: () => {} })
+export const AlertContext = createContext<AlertContextType>({ alertType: null, setAlertType: () => {} })
 
 export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
-  const [message, setMessage] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
+  const [alertType, setAlertType] = useState<AlertType>(null)
 
   return (
-    <AlertContext.Provider value={{ message, setMessage, isOpen, setIsOpen }}>
+    <AlertContext.Provider value={{ alertType, setAlertType }}>
       {children}
     </AlertContext.Provider>
   )

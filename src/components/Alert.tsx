@@ -4,15 +4,13 @@ import { Alert } from 'react-bootstrap'
 import { AlertContext } from '../screens/VoteScreen'
 
 export const CustomAlert: React.VFC = () => {
-  const { message, isOpen } = useContext(AlertContext)
-
-  return (
-    isOpen
-      ? (
+  const { alertType } = useContext(AlertContext)
+  if (alertType === 'OtherErrors') {
+    return (
       <Alert variant='danger'>
-        {message}
+        エラーが発生しました。操作をやり直してください。
       </Alert>
-        )
-      : <></>
-  )
+    )
+  }
+  return <></>
 }

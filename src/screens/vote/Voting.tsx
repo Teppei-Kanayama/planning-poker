@@ -12,7 +12,7 @@ import { AlertContext } from '../VoteScreen'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
-  const { setMessage, setIsOpen } = useContext(AlertContext)
+  const { setAlertType } = useContext(AlertContext)
 
   const handleClickVoteCard = (p: number) => {
     setTemporaryPoint(p)
@@ -20,8 +20,7 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
 
   const handleClickVoteButton = async () => {
     const handleError = () => {
-      setMessage('通信エラーが発生しました。もう一度やり直してください。')
-      setIsOpen(true)
+      setAlertType('OtherErrors')
     }
 
     if (temporaryPoint != null) {
