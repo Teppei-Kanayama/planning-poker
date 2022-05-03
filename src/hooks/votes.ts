@@ -6,7 +6,7 @@ import { useAlertContext } from './alert'
 
 // 自分が投票したポイントを管理するカスタムフック
 export const useMyPoint = (roomId: string, userId: string) => {
-  const [myPoint, setMyPoint] = useState<number>()
+  const [myPoint, setMyPoint] = useState<number | null>(null)
   const { setAlert, resetAlert } = useAlertContext()
 
   useEffect(() => {
@@ -14,6 +14,8 @@ export const useMyPoint = (roomId: string, userId: string) => {
       const vote = await findVote(roomId, userId, setAlert, resetAlert)
       if (vote != null) {
         setMyPoint(vote.point)
+      } else {
+        setMyPoint(null)
       }
     }
     setExistingPoint()

@@ -3,7 +3,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
 
 export const VoteCards = ({ points, onClick, disabled, myPoint, showWallaby }:
-   {points: number[], onClick?: (p: number) => void, disabled?: boolean, myPoint?: number, showWallaby?: boolean}) => {
+   {points: number[], onClick?: (p: number) => void, disabled?: boolean, myPoint?: number | null, showWallaby?: boolean}) => {
   const [wallabyMessageOpen, setWallabyMessageOpen] = useState(false)
   return (
       <>
@@ -42,7 +42,7 @@ export const VoteCards = ({ points, onClick, disabled, myPoint, showWallaby }:
 }
 
 export const FibonacciCards = ({ onClick, disabled, myPoint, showWallaby }:
-   {onClick?: (p: number) => void, disabled?: boolean, myPoint?: number, showWallaby?: boolean}) => {
+   {onClick?: (p: number) => void, disabled?: boolean, myPoint?: number | null, showWallaby?: boolean}) => {
   const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
   return <VoteCards points={fibonacci} onClick={onClick} disabled={disabled} myPoint={myPoint} showWallaby={showWallaby}/>
 }
