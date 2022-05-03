@@ -5,6 +5,7 @@ import firebase from 'firebase/compat/app'
 
 import { firebaseKeys } from './constants'
 import { User, Vote, VoteDocument } from '../types'
+import { AlertType } from '../hooks/alert'
 
 initializeApp(firebaseKeys)
 
@@ -43,17 +44,23 @@ export const subscribeCollection = (callback: (doc: QuerySnapshot<DocumentData>)
   return onSnapshot(collection(db, 'votes'), callback)
 }
 
-export const findVote = async (roomId: string, userId: string) => {
+export const findVote = async (roomId: string, userId: string, setAlert: (alertType: AlertType) => void, resetAlert: () => void) => {
   const docName = getDocName(roomId, userId)
   const ref = doc(db, 'votes', docName).withConverter(voteConverter)
-  const docSnapshot = await getDoc(ref)
-  return docSnapshot.data()
+  try {
+    resetAlert()
+    const docSnapshot = await getDoc(ref)
+    return docSnapshot.data()
+  } catch (e) {
+    setAlert('OtherErrors')
+  }
 }
 
-export const addVote = async (roomId: string, user: User, point: number, onError: () => void) => {
+export const addVote = async (roomId: string, user: User, point: number, setAlert: (alertType: AlertType) => void, resetAlert: () => void) => {
+  const docName = getDocName(roomId, user.id)
+  const ref = doc(db, 'votes', docName).withConverter(voteConverter)
   try {
-    const docName = getDocName(roomId, user.id)
-    const ref = doc(db, 'votes', docName).withConverter(voteConverter)
+    resetAlert()
     await setDoc(ref, {
       roomId: roomId,
       point: point,
@@ -61,30 +68,38 @@ export const addVote = async (roomId: string, user: User, point: number, onError
       userIconUrl: user.iconUrl,
       userName: user.name
     })
-    throw new Error('Required')
   } catch (e) {
-    onError()
-    console.error('Error adding document: ', e)
+    setAlert('OtherErrors')
   }
 }
 
-export const fetchAllVotes = async (roomId: string) => {
+export const fetchAllVotes = async (roomId: string, setAlert: (alertType: AlertType) => void, resetAlert: () => void) => {
   const ref = query(collection(db, 'votes'), where('roomId', '==', roomId), orderBy('point')).withConverter(voteConverter)
-  const querySnapshot = await getDocs(ref)
-  const votes: Vote[] = []
-  querySnapshot.forEach((doc) => {
-    const data = doc.data()
-    votes.push({ point: data.point, user: { id: data.userId, iconUrl: data.userIconUrl, name: data.userName } })
-  })
-  return votes
+  try {
+    resetAlert()
+    const querySnapshot = await getDocs(ref)
+    const votes: Vote[] = []
+    querySnapshot.forEach((doc) => {
+      const data = doc.data()
+      votes.push({ point: data.point, user: { id: data.userId, iconUrl: data.userIconUrl, name: data.userName } })
+    })
+    return votes
+  } catch (e) {
+    setAlert('OtherErrors')
+  }
 }
 
-export const deleteAllVotes = async (roomId: string) => {
+export const deleteAllVotes = async (roomId: string, setAlert: (alertType: AlertType) => void, resetAlert: () => void) => {
   const ref = query(collection(db, 'votes'), where('roomId', '==', roomId)).withConverter(voteConverter)
-  const querySnapshot = await getDocs(ref)
-  querySnapshot.forEach(
-    (doc) => {
-      deleteDoc(doc.ref)
-    }
-  )
+  try {
+    resetAlert()
+    const querySnapshot = await getDocs(ref)
+    querySnapshot.forEach(
+      (doc) => {
+        deleteDoc(doc.ref)
+      }
+    )
+  } catch (e) {
+    setAlert('OtherErrors')
+  }
 }

@@ -12,19 +12,15 @@ import { useAlertContext } from '../../hooks/alert'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
-  const { setAlertType } = useAlertContext()
+  const { setAlert, resetAlert } = useAlertContext()
 
   const handleClickVoteCard = (p: number) => {
     setTemporaryPoint(p)
   }
 
   const handleClickVoteButton = async () => {
-    const handleError = () => {
-      setAlertType('OtherErrors')
-    }
-
     if (temporaryPoint != null) {
-      await addVote(room.id, user, temporaryPoint, handleError)
+      await addVote(room.id, user, temporaryPoint, setAlert, resetAlert)
     }
   }
 
