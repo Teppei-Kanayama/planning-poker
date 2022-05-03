@@ -3,7 +3,6 @@ import { MdHowToVote } from 'react-icons/md'
 
 import { addVote } from '../../data/firebase'
 import { FibonacciCards } from '../../components/Cards'
-import { VoteButton } from '../../components/Button'
 import { Message } from '../../components/Message'
 import { Room, User } from '../../types'
 import { VotedUserIcons } from '../../components/VotedUserIcons'
@@ -13,14 +12,9 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
   const [temporaryPoint, setTemporaryPoint] = useState<number>()
   const { setAlert, resetAlert } = useAlertContext()
 
-  const handleClickVoteCard = (p: number) => {
+  const handleClickVoteCard = async (p: number) => {
     setTemporaryPoint(p)
-  }
-
-  const handleClickVoteButton = async () => {
-    if (temporaryPoint != null) {
-      await addVote(room.id, user, temporaryPoint, setAlert, resetAlert)
-    }
+    await addVote(room.id, user, p, setAlert, resetAlert)
   }
 
   const message = temporaryPoint == null ? '投票してください' : `投票してください（現在の選択：${temporaryPoint}）`
@@ -30,7 +24,6 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
       <Message PrefixIconComponent={MdHowToVote} message={message}/>
       <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
-      <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
     </>
   )
 }

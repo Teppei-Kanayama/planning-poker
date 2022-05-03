@@ -2,7 +2,7 @@ import React from 'react'
 
 import { deleteAllVotes } from '../../data/firebase'
 import { FibonacciCards, VoteCards } from '../../components/Cards'
-import { ResetButton, VoteButton } from '../../components/Button'
+import { ResetButton } from '../../components/Button'
 import { useAllVotes, useMyPoint } from '../../hooks/votes'
 import { Room, User } from '../../types'
 import { UserIcon } from '../../components/UserIcon'
@@ -44,7 +44,6 @@ export const Closed = ({ room, user }: {room: Room, user: User}) => {
   return (
     <>
       <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
-      <VoteButton disabled />
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         {getMessage()}
       </p>
