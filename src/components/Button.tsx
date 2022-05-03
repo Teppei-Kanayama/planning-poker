@@ -1,6 +1,8 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
-import { signOut } from '../data/firebase'
+
+import { useAlertContext } from '../hooks/alert'
+import { signOut, deleteAllVotes } from '../data/firebase'
 
 export const VoteButton = (props: {onClick?: () => void, disabled?: boolean}) => {
   return (
@@ -10,9 +12,15 @@ export const VoteButton = (props: {onClick?: () => void, disabled?: boolean}) =>
   )
 }
 
-export const ResetButton = (props: {onClick?: () => void, disabled?: boolean}) => {
+export const ResetButton = ({ roomId }: {roomId: string}) => {
+  const { setAlert, resetAlert } = useAlertContext()
+
+  const handleClick = async () => {
+    await deleteAllVotes(roomId, setAlert, resetAlert)
+  }
+
   return (
-    <Button {...props} variant='danger' style={{ marginLeft: '1rem', marginBottom: '1rem', display: 'flex' }}>
+    <Button onClick={handleClick} variant='danger' style={{ marginLeft: '1rem', marginBottom: '1rem', display: 'flex' }}>
       全員の投票をリセット
     </Button>
   )

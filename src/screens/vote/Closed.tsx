@@ -1,22 +1,15 @@
 import React from 'react'
 
-import { deleteAllVotes } from '../../data/firebase'
 import { FibonacciCards, VoteCards } from '../../components/Cards'
 import { ResetButton } from '../../components/Button'
 import { useAllVotes, useMyPoint } from '../../hooks/votes'
 import { Room, User } from '../../types'
 import { UserIcon } from '../../components/UserIcon'
-import { useAlertContext } from '../../hooks/alert'
 
 export const Closed = ({ room, user }: {room: Room, user: User}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
-  const { setAlert, resetAlert } = useAlertContext()
   const [votes] = useAllVotes(room.id)
   const points = votes.map((vote) => vote.point)
-
-  const onClickResetAllVotes = async () => {
-    await deleteAllVotes(room.id, setAlert, resetAlert)
-  }
 
   const getMessage = () => {
     if (votes.length === 0) {
@@ -55,7 +48,7 @@ export const Closed = ({ room, user }: {room: Room, user: User}) => {
         }
       </div>
       <VoteCards points={points} disabled/>
-      <ResetButton onClick={onClickResetAllVotes} />
+      <ResetButton roomId={room.id} />
     </>
   )
 }

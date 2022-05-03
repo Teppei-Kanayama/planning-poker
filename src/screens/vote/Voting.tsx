@@ -8,6 +8,7 @@ import { Room, User } from '../../types'
 import { VotedUserIcons } from '../../components/VotedUserIcons'
 import { useAlertContext } from '../../hooks/alert'
 import { useMyPoint } from '../../hooks/votes'
+import { ResetButton } from '../../components/Button'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [myPoint] = useMyPoint(room.id, user.id)
@@ -22,6 +23,7 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
       <Message PrefixIconComponent={MdHowToVote} message='投票受付中' />
       <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
       <FibonacciCards onClick={handleClickVoteCard} showWallaby={true} myPoint={myPoint}/>
+      <ResetButton roomId={room.id} />
     </>
   )
 }
