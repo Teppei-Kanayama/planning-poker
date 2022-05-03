@@ -1,5 +1,4 @@
 
-/* eslint-disable no-use-before-define */
 import React from 'react'
 import { IconType } from 'react-icons'
 

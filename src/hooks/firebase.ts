@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import { useEffect, useState } from 'react'
 
 import firebase from 'firebase/compat/app'

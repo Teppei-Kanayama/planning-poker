@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React, { createContext, useContext, useState } from 'react'
 
 export type AlertType = 'OtherErrors' | null // TODO: ここにエラーの種類を足していく

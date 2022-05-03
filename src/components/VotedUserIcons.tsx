@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react'
 import { User } from '../types'
 import { UserIcon } from './UserIcon'

@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { useAlertContext } from '../hooks/alert'

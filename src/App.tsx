@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 

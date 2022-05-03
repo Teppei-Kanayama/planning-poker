@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react'
 import { MdAccountCircle } from 'react-icons/md'
 import ReactTooltip from 'react-tooltip'

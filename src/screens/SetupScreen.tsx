@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React, { ChangeEvent, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'

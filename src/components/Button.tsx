@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 import { signOut } from '../data/firebase'
