@@ -3,9 +3,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { SignOutButton } from '../components/Button'
 import { MdOutlineContentCopy, MdOpenInNew } from 'react-icons/md'
-import { Container, Navbar } from 'react-bootstrap'
+import { NavigationBar } from '../components/NavigationBar'
 
 const Section = ({ heading, children }: {heading: string, children: React.ReactElement}) => {
   return (
@@ -35,32 +34,8 @@ export const SetupScreen = () => {
 
   return (
     <>
-      <Navbar bg="success">
-        <Container>
-          <Navbar.Brand href="#home">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ fontStyle: 'italic', color: 'white' }}>
-                Planning Poker
-              </div>
-              <img
-                src="wallaby.png"
-                height="50"
-                className="d-inline-block align-top"
-                alt="logo"
-              />
-            </div>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              <SignOutButton />
-            </Navbar.Text>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
+      <NavigationBar />
       <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所の作成</h1>
-
       <Section heading={' 1. まずは参加人数を入力し、投票所を作成してください。'}>
         <Form.Group style={{ display: 'flex', alignItems: 'center' }}>
           <Form.Label>参加人数</Form.Label>
@@ -78,7 +53,6 @@ export const SetupScreen = () => {
           >作成する</Button>
         </Form.Group>
       </Section>
-
       {
         roomUrl && (
           <>
