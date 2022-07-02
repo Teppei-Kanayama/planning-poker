@@ -1,36 +1,40 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { MdHowToVote } from 'react-icons/md'
 
 import { addVote } from '../../data/firebase'
 import { FibonacciCards } from '../../components/Cards'
-import { VoteButton } from '../../components/Button'
 import { Message } from '../../components/Message'
 import { Room, User } from '../../types'
-import { VotedUserIcons } from '../../components/VotedUserIcons'
 import { useAlertContext } from '../../hooks/alert'
+import { useMyPoint } from '../../hooks/votes'
+import { ResetButton } from '../../components/Button'
+import { UserIcon } from '../../components/UserIcon'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
-  const [temporaryPoint, setTemporaryPoint] = useState<number>()
+  const [myPoint] = useMyPoint(room.id, user.id)
   const { setAlert, resetAlert } = useAlertContext()
 
-  const handleClickVoteCard = (p: number) => {
-    setTemporaryPoint(p)
+  const handleClickVoteCard = async (p: number) => {
+    await addVote(room.id, user, p, setAlert, resetAlert)
   }
-
-  const handleClickVoteButton = async () => {
-    if (temporaryPoint != null) {
-      await addVote(room.id, user, temporaryPoint, setAlert, resetAlert)
-    }
-  }
-
-  const message = temporaryPoint == null ? '投票してください' : `投票してください（現在の選択：${temporaryPoint}）`
 
   return (
     <>
-      <Message PrefixIconComponent={MdHowToVote} message={message}/>
-      <VotedUserIcons votedUsers={votedUsers} roomSize={room.size}/>
-      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true}/>
-      <VoteButton onClick={handleClickVoteButton} disabled={temporaryPoint == null}/>
+      <Message PrefixIconComponent={MdHowToVote} message='投票受付中' />
+      <div style={{ display: 'flex', marginLeft: '1rem', fontSize: '1.5em' }}>
+        投票済みユーザー：
+        {
+          votedUsers.length > 0
+            ? (
+                votedUsers.map((user) => {
+                  return <UserIcon key={user.id} user={user} style={{ height: '2rem', margin: '0.2rem' }}/>
+                })
+              )
+            : <>なし</>
+        }
+      </div>
+      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true} myPoint={myPoint}/>
+      <ResetButton roomId={room.id} />
     </>
   )
 }

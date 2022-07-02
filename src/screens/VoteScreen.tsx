@@ -6,49 +6,39 @@ import { SignOutButton } from '../components/Button'
 import { LoadingScreen } from './LoadingScreen'
 import { Room, User } from '../types'
 import { Closed } from './vote/Closed'
-import { Voted } from './vote/Voted'
 import { Voting } from './vote/Voting'
 import { CustomAlert } from '../components/Alert'
 import { AlertProvider } from '../hooks/alert'
 
 const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
-  const [myVoteCount, setMyVoteCount] = useState<number>()
   const voteCount = votedUsers.length
 
   useEffect(
     () => {
       const unsubscribe = subscribeCollection(
         (querySnapshot) => {
-          let myCount = 0
           const votedUsersArray: User[] = []
           querySnapshot.forEach(
             (doc) => {
               const data = doc.data()
               if (data.roomId === room.id) {
                 votedUsersArray.push({ id: data.userId, iconUrl: data.userIconUrl, name: data.userName })
-                if (data.userId === user.id) {
-                  myCount += 1
-                }
               }
             }
           )
           setVotedUsers(votedUsersArray)
-          setMyVoteCount(myCount)
         }
       )
       return () => { unsubscribe() }
     }
     , [])
 
-  if (voteCount == null || myVoteCount == null) {
+  if (voteCount == null) {
     return <LoadingScreen />
   }
   if (voteCount >= room.size) {
     return <Closed room={room} user={user} />
-  }
-  if (myVoteCount >= 1) {
-    return <Voted votedUsers={votedUsers} room={room} user={user}/>
   }
   return <Voting votedUsers={votedUsers} room={room} user={user}/>
 }
