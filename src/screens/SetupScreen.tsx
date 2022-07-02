@@ -65,9 +65,9 @@ export const SetupScreen = () => {
               </CopyToClipboard>
             </div>
             <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>3. あなたも投票所に移動しましょう！</h2>
-            <a href={roomUrl} target='_blank' rel='noreferrer' style={{ padding: '1rem' }}>
-              投票所に移動する<MdOpenInNew size={30}/>
-            </a>
+            <div style={{ margin: '2rem' }}>
+              <Button href={roomUrl} target='_blank'>投票所に移動する<MdOpenInNew size={30}/></Button>
+            </div>
           </>
         )
       }
