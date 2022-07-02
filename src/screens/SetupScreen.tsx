@@ -48,15 +48,22 @@ export const SetupScreen = () => {
 
       <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所の作成</h1>
 
-      <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>1. まずは参加人数を入力し、「作成する」ボタンを押してください。</h2>
+      <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>
+        1. まずは参加人数を入力し、「作成する」ボタンを押してください。
+      </h2>
       <Form.Group style={{ display: 'flex', alignItems: 'center', margin: '2rem' }}>
         <Form.Label>参加人数</Form.Label>
-        <Form.Control type='number' min='1' onChange={handleChange} style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
+        <Form.Control
+          type='number'
+          min='1'
+          disabled={roomUrl != null}
+          onChange={handleChange}
+          style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
         人
         <Button
           onClick={handleClick}
           style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem', marginLeft: '3rem' }}
-          disabled={!Number.isInteger(parseFloat(size)) || parseInt(size) <= 0}
+          disabled={roomUrl != null || !Number.isInteger(parseFloat(size)) || parseInt(size) <= 0}
         >作成する</Button>
       </Form.Group>
 
@@ -66,8 +73,9 @@ export const SetupScreen = () => {
             <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>2. 投票所のURLを参加者に配布してください。</h2>
             <div style={{ margin: '2rem' }}>
               <CopyToClipboard text={roomUrl}>
-                <Button variant='outline-primary'>投票所のURLをクリップボードにコピー <MdOutlineContentCopy/></Button>
+                <Button variant='outline-primary' style={{ marginRight: '2rem' }}>投票所のURLをクリップボードにコピー<MdOutlineContentCopy/></Button>
               </CopyToClipboard>
+              <Button variant='warning'>投票所の作成をやり直す</Button>
             </div>
             <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>3. あなたも投票所に移動しましょう！</h2>
             <div style={{ margin: '2rem' }}>
