@@ -75,7 +75,10 @@ export const SetupScreen = () => {
               <CopyToClipboard text={roomUrl}>
                 <Button variant='outline-primary' style={{ marginRight: '2rem' }}>投票所のURLをクリップボードにコピー<MdOutlineContentCopy/></Button>
               </CopyToClipboard>
-              <Button variant='warning'>投票所の作成をやり直す</Button>
+              <Button
+                variant='warning'
+                onClick={() => { setRoomUrl(undefined) }}
+              >投票所の作成をやり直す</Button>
             </div>
             <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>3. あなたも投票所に移動しましょう！</h2>
             <div style={{ margin: '2rem' }}>
