@@ -1,6 +1,6 @@
 import React from 'react'
-import { SignOutButton } from './Button'
-import { Container, Navbar } from 'react-bootstrap'
+import { Button, Container, Navbar } from 'react-bootstrap'
+import { signOut } from '../data/firebase'
 
 export const NavigationBar = () => {
   return (
@@ -22,7 +22,19 @@ export const NavigationBar = () => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            <SignOutButton />
+            <Button
+              variant='success'
+              onClick={
+                () => {
+                  signOut()
+                  location.reload()
+                }
+              }
+            >
+              <span style={{ color: 'white' }}>
+                サインアウト
+              </span>
+            </Button>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
