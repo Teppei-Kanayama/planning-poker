@@ -44,13 +44,14 @@ export const SetupScreen = () => {
 
       <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>新規投票所の作成</h1>
 
-      <Form.Group className='mb-3' style={{ display: 'flex', alignItems: 'center', marginLeft: '1rem' }}>
-        <Form.Label style={{ display: 'flex', alignItems: 'end' }}>参加人数</Form.Label>
+      <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>1. まずは参加人数を入力し、「作成する」ボタンを押してください。</h2>
+      <Form.Group style={{ display: 'flex', alignItems: 'center', margin: '2rem' }}>
+        <Form.Label>参加人数</Form.Label>
         <Form.Control type='number' min='1' onChange={handleChange} style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
-            人
+        人
         <Button
           onClick={handleClick}
-          style={{ justifyContent: 'center', display: 'flex', padding: '0.5rem', marginLeft: '3rem' }}
+          style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem', marginLeft: '3rem' }}
           disabled={!Number.isInteger(parseFloat(size)) || parseInt(size) <= 0}
         >作成する</Button>
       </Form.Group>
@@ -58,10 +59,7 @@ export const SetupScreen = () => {
       {
         roomUrl && (
           <>
-            <p>
-              ↓投票所が作成されました！投票所のリンクを参加者に配布しましょう。
-            </p>
-
+            <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>2. 投票所のURLを参加者に配布してください。</h2>
             <a href={roomUrl} target='_blank' rel='noreferrer' style={{ padding: '1rem' }}>
               {roomUrl} <MdOpenInNew size={30}/>
             </a>
