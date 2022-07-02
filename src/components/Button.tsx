@@ -29,7 +29,7 @@ export const SignOutButton = () => {
           }
         }
         variant="light"
-        style={{ marginLeft: 'auto' }}>
+      >
       サインアウト
       </Button>
     </div>

@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { SignOutButton } from '../components/Button'
 import { MdOutlineContentCopy, MdOpenInNew } from 'react-icons/md'
+import { Container, Navbar } from 'react-bootstrap'
 
 export const SetupScreen = () => {
   const [size, setSize] = useState('')
@@ -22,8 +23,26 @@ export const SetupScreen = () => {
 
   return (
     <>
-      <SignOutButton />
-      <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', marginBottom: '2rem' }}>新規投票所の作成</h1>
+      <Navbar bg="light">
+        <Container>
+          <Navbar.Brand href="#home">
+            <img
+              src="wallaby.png"
+              height="50"
+              className="d-inline-block align-top"
+              alt="logo"
+            />
+          </Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text>
+              <SignOutButton />
+            </Navbar.Text>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>新規投票所の作成</h1>
 
       <Form.Group className='mb-3' style={{ display: 'flex', alignItems: 'center', marginLeft: '1rem' }}>
         <Form.Label style={{ display: 'flex', alignItems: 'end' }}>参加人数</Form.Label>
