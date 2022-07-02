@@ -61,7 +61,7 @@ export const VoteScreen = ({ user }: {user: User}) => {
   return (
     <AlertProvider>
       <NavigationBar />
-      <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', padding: '0.5rem' }}>投票所（定員: {roomSizeString}名）</h1>
+      <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所（定員: {roomSizeString}名）</h1>
       <CustomAlert />
       <VoteRouter room={room} user={user}/>
       <Link to="/create-new-room" style={{ fontSize: '1rem', padding: '1rem' }}>新しい投票所を作成する</Link>
