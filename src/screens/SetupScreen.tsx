@@ -10,7 +10,6 @@ import { Container, Navbar } from 'react-bootstrap'
 export const SetupScreen = () => {
   const [size, setSize] = useState('')
   const [roomUrl, setRoomUrl] = useState<string>()
-  const [copied, setCopied] = useState(false)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSize(event.target.value)
@@ -60,19 +59,15 @@ export const SetupScreen = () => {
         roomUrl && (
           <>
             <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>2. 投票所のURLを参加者に配布してください。</h2>
+            <div style={{ margin: '2rem' }}>
+              <CopyToClipboard text={roomUrl}>
+                <Button variant='secondary'>投票所のURLをクリップボードにコピー <MdOutlineContentCopy/></Button>
+              </CopyToClipboard>
+            </div>
+            <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>3. あなたも投票所に移動しましょう！</h2>
             <a href={roomUrl} target='_blank' rel='noreferrer' style={{ padding: '1rem' }}>
-              {roomUrl} <MdOpenInNew size={30}/>
+              投票所に移動する<MdOpenInNew size={30}/>
             </a>
-            <CopyToClipboard text={roomUrl} onCopy={() => { setCopied(true) }}>
-              <Button variant='light' size='lg' ><MdOutlineContentCopy/></Button>
-            </CopyToClipboard>
-            {
-              copied && (
-                <>
-                  copied!
-                </>
-              )
-            }
           </>
         )
       }
