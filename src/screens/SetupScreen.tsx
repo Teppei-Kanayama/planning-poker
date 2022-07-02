@@ -22,15 +22,20 @@ export const SetupScreen = () => {
 
   return (
     <>
-      <Navbar bg="light">
+      <Navbar bg="success">
         <Container>
           <Navbar.Brand href="#home">
-            <img
-              src="wallaby.png"
-              height="50"
-              className="d-inline-block align-top"
-              alt="logo"
-            />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ fontStyle: 'italic', color: 'white' }}>
+                Planning Poker
+              </div>
+              <img
+                src="wallaby.png"
+                height="50"
+                className="d-inline-block align-top"
+                alt="logo"
+              />
+            </div>
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
@@ -41,7 +46,7 @@ export const SetupScreen = () => {
         </Container>
       </Navbar>
 
-      <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>新規投票所の作成</h1>
+      <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所の作成</h1>
 
       <h2 style={{ fontSize: '1.5rem', margin: '1rem' }}>1. まずは参加人数を入力し、「作成する」ボタンを押してください。</h2>
       <Form.Group style={{ display: 'flex', alignItems: 'center', margin: '2rem' }}>

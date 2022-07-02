@@ -22,15 +22,17 @@ export const SignOutButton = () => {
   return (
     <div style={{ display: 'flex' }}>
       <Button
+        variant='success'
         onClick={
           () => {
             signOut()
             location.reload()
           }
         }
-        variant="light"
       >
-      サインアウト
+        <div style={{ color: 'white' }}>
+          サインアウト
+        </div>
       </Button>
     </div>
   )
