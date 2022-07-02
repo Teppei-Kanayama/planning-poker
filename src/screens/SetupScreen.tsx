@@ -36,7 +36,7 @@ export const SetupScreen = () => {
     <>
       <NavigationBar />
       <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所の作成</h1>
-      <Section heading={' 1. まずは参加人数を入力し、投票所を作成してください。'}>
+      <Section heading={' 1. 参加人数を入力し、投票所を作成してください。'}>
         <Form.Group style={{ display: 'flex', alignItems: 'center' }}>
           <Form.Label>参加人数</Form.Label>
           <Form.Control
