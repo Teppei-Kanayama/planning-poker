@@ -1,8 +1,8 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 
-import { useAlertContext } from '../hooks/alert'
-import { deleteAllVotes } from '../data/firebase'
+import { useAlertContext } from '../../../hooks/alert'
+import { deleteAllVotes } from '../../../data/firebase'
 
 export const ResetButton = ({ roomId }: {roomId: string}) => {
   const { setAlert, resetAlert } = useAlertContext()

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { MdOutlineContentCopy, MdOpenInNew } from 'react-icons/md'
-import { NavigationBar } from '../components/NavigationBar'
+import { NavigationBar } from './components/NavigationBar'
 
 const Section = ({ heading, children }: {heading: string, children: React.ReactElement}) => {
   return (
@@ -34,7 +34,7 @@ export const SetupScreen = () => {
 
   return (
     <>
-      <NavigationBar />
+      <NavigationBar isSignedIn={true} />
       <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所の作成</h1>
       <Section heading={' 1. 参加人数を入力し、投票所を作成してください。'}>
         <Form.Group style={{ display: 'flex', alignItems: 'center' }}>

@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button, Container, Navbar } from 'react-bootstrap'
-import { signOut } from '../data/firebase'
+import { signOut } from '../../data/firebase'
 
-export const NavigationBar = () => {
+export const NavigationBar = ({ isSignedIn }: { isSignedIn: boolean }) => {
   return (
     <Navbar bg="success">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ fontStyle: 'italic', color: 'white' }}>
               Planning Poker
@@ -22,19 +22,24 @@ export const NavigationBar = () => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            <Button
-              variant='success'
-              onClick={
-                () => {
-                  signOut()
-                  location.reload()
-                }
-              }
-            >
-              <span style={{ color: 'white' }}>
-                サインアウト
-              </span>
-            </Button>
+            {
+              isSignedIn &&
+                (
+                <Button
+                  variant='success'
+                  onClick={
+                    () => {
+                      signOut()
+                      location.reload()
+                    }
+                  }
+                >
+                  <span style={{ color: 'white' }}>
+                    サインアウト
+                  </span>
+                </Button>
+                )
+            }
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

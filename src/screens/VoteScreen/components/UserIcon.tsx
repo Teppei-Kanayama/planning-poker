@@ -1,7 +1,7 @@
 import React from 'react'
 import { MdAccountCircle } from 'react-icons/md'
 import ReactTooltip from 'react-tooltip'
-import { User } from '../types'
+import { User } from '../../../types'
 
 export const UserIcon = ({ user, style }: {user: User, style: React.CSSProperties}) => {
   if (user.iconUrl == null) {
