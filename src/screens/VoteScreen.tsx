@@ -9,6 +9,7 @@ import { Voting } from './vote/Voting'
 import { CustomAlert } from '../components/Alert'
 import { AlertProvider } from '../hooks/alert'
 import { NavigationBar } from '../components/NavigationBar'
+import { Button } from 'react-bootstrap'
 
 const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
   const [votedUsers, setVotedUsers] = useState<User[]>([])
@@ -51,9 +52,18 @@ export const VoteScreen = ({ user }: {user: User}) => {
   const invalidRoomSizeString = roomSizeString == null || !Number.isInteger(parseFloat(roomSizeString)) || parseInt(roomSizeString) <= 0
   if (roomId == null || invalidRoomSizeString) {
     return (
-      <h1>
-        URLが不正です。有効なroomIdとroomSizeを指定してください。
-      </h1>
+      <>
+        <NavigationBar isSignedIn={true} />
+        <p style={{ margin: '2rem' }}> URLが不正です。再度URLを入力するか、投票所を新規作成してください。</p>
+        <div style={{ display: 'flex' }}>
+          <Button
+            href={'/create-new-room'}
+            style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem', marginLeft: '3rem' }}
+          >
+            投票所を新規作成する
+          </Button>
+        </div>
+      </>
     )
   }
   const room = { id: roomId, size: parseInt(roomSizeString) }
