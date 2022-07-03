@@ -21,6 +21,7 @@ const Section = ({ heading, children }: {heading: string, children: React.ReactE
 
 export const SetupScreen = () => {
   const [size, setSize] = useState('')
+  const [isUseBot, setIsUseBot] = useState(false)
   const [roomUrl, setRoomUrl] = useState<string>()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +30,7 @@ export const SetupScreen = () => {
 
   const handleClick = () => {
     const roomId = uuidv4()
-    setRoomUrl(`${location.protocol}//${location.host}/room?id=${roomId}&size=${size}`)
+    setRoomUrl(`${location.protocol}//${location.host}/room?id=${roomId}&size=${size}&b=${isUseBot}`)
   }
 
   return (
@@ -46,6 +47,13 @@ export const SetupScreen = () => {
             onChange={handleChange}
             style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
           人
+
+          <Form.Check
+            checked={isUseBot}
+            onChange={(e) => { setIsUseBot(e.target.checked) }}
+            type='checkbox'
+            label='botを利用する'
+          />
           <Button
             onClick={handleClick}
             style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem', marginLeft: '3rem' }}
