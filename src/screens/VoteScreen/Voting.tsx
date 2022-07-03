@@ -2,13 +2,13 @@ import React from 'react'
 import { MdHowToVote } from 'react-icons/md'
 
 import { addVote } from '../../data/firebase'
-import { FibonacciCards } from '../../components/Cards'
-import { Message } from '../../components/Message'
+import { FibonacciCards } from './components/Cards'
+import { Message } from './components/Message'
 import { Room, User } from '../../types'
 import { useAlertContext } from '../../hooks/alert'
 import { useMyPoint } from '../../hooks/votes'
-import { ResetButton } from '../../components/Button'
-import { UserIcon } from '../../components/UserIcon'
+import { ResetButton } from './components/Button'
+import { UserIcon } from './components/UserIcon'
 
 export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, votedUsers: User[]}) => {
   const [myPoint] = useMyPoint(room.id, user.id)

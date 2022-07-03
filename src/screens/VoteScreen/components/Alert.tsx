@@ -1,6 +1,6 @@
 import React from 'react'
 import { Alert } from 'react-bootstrap'
-import { useAlertContext } from '../hooks/alert'
+import { useAlertContext } from '../../../hooks/alert'
 
 export const CustomAlert: React.VFC = () => {
   const { alertType } = useAlertContext()

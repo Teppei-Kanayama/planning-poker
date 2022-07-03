@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Container, Navbar } from 'react-bootstrap'
-import { signOut } from '../data/firebase'
+import { signOut } from '../../data/firebase'
 
 export const NavigationBar = ({ isSignedIn }: { isSignedIn: boolean }) => {
   return (

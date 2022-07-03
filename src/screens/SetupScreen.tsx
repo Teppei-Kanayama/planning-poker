@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { MdOutlineContentCopy, MdOpenInNew } from 'react-icons/md'
-import { NavigationBar } from '../components/NavigationBar'
+import { NavigationBar } from './components/NavigationBar'
 
 const Section = ({ heading, children }: {heading: string, children: React.ReactElement}) => {
   return (

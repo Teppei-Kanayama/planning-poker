@@ -5,7 +5,7 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import { User } from '../types'
-import { NavigationBar } from '../components/NavigationBar'
+import { NavigationBar } from './components/NavigationBar'
 import { Button } from 'react-bootstrap'
 
 // Configure FirebaseUI.
