@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Image from 'react-bootstrap/Image'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
@@ -23,7 +22,6 @@ const uiConfig = {
 }
 
 export const HomeScreen = ({ user }: {user: User | null}) => {
-  console.log(user)
   return (
     <div>
       <NavigationBar isSignedIn={ user != null }/>
@@ -44,9 +42,6 @@ export const HomeScreen = ({ user }: {user: User | null}) => {
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
             )
       }
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>
-        <Image className="border border-5 rounded border-success" src='screenshot.png' alt='screenshot of the application' fluid />
-      </div>
     </div>
   )
 }

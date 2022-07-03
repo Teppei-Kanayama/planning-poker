@@ -20,7 +20,7 @@ const Section = ({ heading, children }: {heading: string, children: React.ReactE
 }
 
 export const SetupScreen = () => {
-  const [size, setSize] = useState('')
+  const [size, setSize] = useState('1')
   const [roomUrl, setRoomUrl] = useState<string>()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +44,7 @@ export const SetupScreen = () => {
             min='1'
             disabled={roomUrl != null}
             onChange={handleChange}
+            defaultValue={size}
             style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
           人
           <Button
