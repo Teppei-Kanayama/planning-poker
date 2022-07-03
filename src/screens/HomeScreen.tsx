@@ -6,6 +6,7 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import { User } from '../types'
 import { NavigationBar } from '../components/NavigationBar'
+import { Button } from 'react-bootstrap'
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -30,7 +31,14 @@ export const HomeScreen = ({ user }: {user: User | null}) => {
       {
         user
           ? (
-          <div>TODO</div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+            href={'/create-new-room'}
+            style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem', marginLeft: '3rem' }}
+            >
+              投票所を新規作成する
+            </Button>
+          </div>
             )
           : (
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
