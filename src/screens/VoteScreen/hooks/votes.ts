@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { fetchAllVotes, findVote } from '../data/firebase'
-import { Vote } from '../types'
-import { useAlertContext } from './alert'
+import { fetchAllVotes, findVote } from '../../../data/firebase'
+import { Vote } from '../../../types'
+import { useAlertContext } from '../../../hooks/alert'
 
 // 自分が投票したポイントを管理するカスタムフック
 export const useMyPoint = (roomId: string, userId: string) => {

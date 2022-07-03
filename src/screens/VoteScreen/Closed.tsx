@@ -2,7 +2,7 @@ import React from 'react'
 
 import { FibonacciCards, VoteCards } from './components/Cards'
 import { ResetButton } from './components/Button'
-import { useAllVotes, useMyPoint } from '../../hooks/votes'
+import { useAllVotes, useMyPoint } from './hooks/votes'
 import { Room, User } from '../../types'
 import { UserIcon } from './components/UserIcon'
 

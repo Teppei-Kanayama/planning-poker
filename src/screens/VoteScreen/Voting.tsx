@@ -6,7 +6,7 @@ import { FibonacciCards } from './components/Cards'
 import { Message } from './components/Message'
 import { Room, User } from '../../types'
 import { useAlertContext } from '../../hooks/alert'
-import { useMyPoint } from '../../hooks/votes'
+import { useMyPoint } from './hooks/votes'
 import { ResetButton } from './components/Button'
 import { UserIcon } from './components/UserIcon'
 
