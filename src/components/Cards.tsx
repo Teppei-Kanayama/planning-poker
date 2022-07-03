@@ -31,7 +31,11 @@ export const VoteCards = ({ points, onClick, disabled, myPoint, showWallaby }:
                   style={{ width: '4rem' }}>
                   <img src='wallaby.png' alt="Logo" style={{ width: '3.5rem', marginLeft: '-0.7rem' }} />
                 </Button>
-                {wallabyMessageOpen && '< wallabyだよ。投票に集中してね。'}
+                {wallabyMessageOpen &&
+                  <div style={{ marginLeft: '0.5rem' }}>
+                    {'< wallabyだよ。投票に集中してね。'}
+                  </div>
+                }
               </>
             )
           }
