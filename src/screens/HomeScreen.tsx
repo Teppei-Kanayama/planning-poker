@@ -26,8 +26,16 @@ export const HomeScreen = ({ user }: {user: User | null}) => {
   return (
     <div>
       <NavigationBar />
-      <p style={{ margin: '2rem' }}>オンラインでPlanning PokerをするためのWebアプリです。Googleアカウントがあれば誰でも使えます。</p>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+      <p style={{ margin: '2rem' }}>Planning PokerのためのWebアプリです。Googleアカウントがあれば誰でも利用できます。不具合報告や要望などは<a href='https://twitter.com/tkanayama_'>@tkanayama</a>までお願いします。</p>
+      {
+        user
+          ? (
+          <div>TODO</div>
+            )
+          : (
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+            )
+      }
       <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>
         <Image className="border border-5 rounded border-success" src='screenshot.png' alt='screenshot of the application' fluid />
       </div>
