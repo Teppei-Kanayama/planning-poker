@@ -26,7 +26,7 @@ export const HomeScreen = ({ user }: {user: User | null}) => {
   console.log(user)
   return (
     <div>
-      <NavigationBar />
+      <NavigationBar isSignedIn={ user != null }/>
       <p style={{ margin: '2rem' }}>Planning PokerのためのWebアプリです。Googleアカウントがあれば誰でも利用できます。不具合報告や要望などは<a href='https://twitter.com/tkanayama_'>@tkanayama</a>までお願いします。</p>
       {
         user

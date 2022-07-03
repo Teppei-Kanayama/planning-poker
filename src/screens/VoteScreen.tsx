@@ -60,7 +60,7 @@ export const VoteScreen = ({ user }: {user: User}) => {
 
   return (
     <AlertProvider>
-      <NavigationBar />
+      <NavigationBar isSignedIn={true} />
       <h1 style={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold', margin: '2rem' }}>投票所（定員: {roomSizeString}名）</h1>
       <CustomAlert />
       <VoteRouter room={room} user={user}/>
