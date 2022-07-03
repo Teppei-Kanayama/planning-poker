@@ -6,7 +6,7 @@ export const NavigationBar = () => {
   return (
     <Navbar bg="success">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ fontStyle: 'italic', color: 'white' }}>
               Planning Poker
