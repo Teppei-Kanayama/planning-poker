@@ -20,7 +20,7 @@ const Section = ({ heading, children }: {heading: string, children: React.ReactE
 }
 
 export const SetupScreen = () => {
-  const [size, setSize] = useState('')
+  const [size, setSize] = useState('2')
   const [isUseBot, setIsUseBot] = useState(false)
   const [roomUrl, setRoomUrl] = useState<string>()
 
@@ -42,9 +42,10 @@ export const SetupScreen = () => {
           <Form.Label>参加人数</Form.Label>
           <Form.Control
             type='number'
-            min='1'
+            min='2'
             disabled={roomUrl != null}
             onChange={handleChange}
+            defaultValue={size}
             style={{ width: '5rem', marginLeft: '1rem', marginRight: '1rem' }}/>
           人
 
@@ -52,14 +53,14 @@ export const SetupScreen = () => {
             checked={isUseBot}
             onChange={(e) => { setIsUseBot(e.target.checked) }}
             type='checkbox'
-            label='botを1人追加する'
+            label='botを1人含める'
             disabled={roomUrl != null}
             style={{ marginLeft: '2rem' }}
           />
           <Button
             onClick={handleClick}
             style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem', marginLeft: '3rem' }}
-            disabled={roomUrl != null || !Number.isInteger(parseFloat(size)) || parseInt(size) <= 0}
+            disabled={roomUrl != null || !Number.isInteger(parseFloat(size)) || parseInt(size) <= 1}
           >作成する</Button>
         </Form.Group>
       </Section>
