@@ -35,6 +35,14 @@ const VoteRouter = ({ room, user }: {room: Room, user: User}) => {
     }
     , [])
 
+  useEffect(
+    () => {
+      if (room.activateBot) {
+        console.log('botが有効です')
+      }
+    }
+    , [])
+
   if (voteCount == null) {
     return <LoadingScreen />
   }
@@ -48,6 +56,7 @@ export const VoteScreen = ({ user }: {user: User}) => {
   const [searchParams] = useSearchParams()
   const roomId = searchParams.get('id')
   const roomSizeString = searchParams.get('size')
+  const activateBot = searchParams.get('b') === 'true'
 
   const invalidRoomSizeString = roomSizeString == null || !Number.isInteger(parseFloat(roomSizeString)) || parseInt(roomSizeString) <= 0
   if (roomId == null || invalidRoomSizeString) {
@@ -66,7 +75,7 @@ export const VoteScreen = ({ user }: {user: User}) => {
       </>
     )
   }
-  const room = { id: roomId, size: parseInt(roomSizeString) }
+  const room = { id: roomId, size: parseInt(roomSizeString), activateBot: activateBot }
 
   return (
     <AlertProvider>

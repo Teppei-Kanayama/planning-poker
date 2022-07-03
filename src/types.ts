@@ -7,6 +7,7 @@ export type User = {
 export type Room = {
   id: string,
   size: number,
+  activateBot?: boolean,
 }
 
 export type Vote = {
