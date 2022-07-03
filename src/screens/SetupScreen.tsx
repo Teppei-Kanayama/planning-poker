@@ -52,7 +52,9 @@ export const SetupScreen = () => {
             checked={isUseBot}
             onChange={(e) => { setIsUseBot(e.target.checked) }}
             type='checkbox'
-            label='botを利用する'
+            label='botを1人追加する'
+            disabled={roomUrl != null}
+            style={{ marginLeft: '2rem' }}
           />
           <Button
             onClick={handleClick}
