@@ -42,6 +42,17 @@ export const HomeScreen = ({ user }: {user: User | null}) => {
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
             )
       }
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '5rem' }}>
+        <iframe
+          width="1120"
+          height="630"
+          src="https://www.youtube.com/embed/eIhJriMP930"
+          title="demo video"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen>
+        </iframe>
+      </div>
     </div>
   )
 }
