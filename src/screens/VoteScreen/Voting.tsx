@@ -33,7 +33,7 @@ export const Voting = ({ room, user, votedUsers }: {room: Room, user: User, vote
             : <>なし</>
         }
       </div>
-      <FibonacciCards onClick={handleClickVoteCard} showWallaby={true} myPoint={myPoint}/>
+      <FibonacciCards onClick={handleClickVoteCard} myPoint={myPoint}/>
       <ResetButton roomId={room.id} />
     </>
   )
