@@ -1,52 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
 
-export const VoteCards = ({ points, onClick, disabled, myPoint, showWallaby }:
-   {points: number[], onClick?: (p: number) => void, disabled?: boolean, myPoint?: number | null, showWallaby?: boolean}) => {
-  const [wallabyMessageOpen, setWallabyMessageOpen] = useState(false)
+export const VoteCards = ({ points, onClick, disabled, myPoint }:
+   {points: number[], onClick?: (p: number) => void, disabled?: boolean, myPoint?: number | null}) => {
   return (
-      <>
-        <ButtonGroup size="lg" className="mb-2" style={{ height: '8rem', padding: '1rem' }}>
-          {points.map((point) => {
-            const variant = (myPoint != null && myPoint === point) ? 'dark' : 'outline-dark'
-            return (
-              <Button
-                key={point}
-                onClick={() => { onClick && onClick(point) }}
-                disabled={disabled}
-                variant={variant}
-                style={{ width: '4rem' }}>
-                {point}
-              </Button>
-            )
-          })}
-          {
-            showWallaby && (
-              <>
-                <Button
-                  onClick={() => { setWallabyMessageOpen(true) }}
-                  disabled={disabled}
-                  variant='outline-dark'
-                  style={{ width: '4rem' }}>
-                  <img src='wallaby.png' alt="Logo" style={{ width: '3.5rem', marginLeft: '-0.7rem' }} />
-                </Button>
-                {wallabyMessageOpen &&
-                  <div style={{ marginLeft: '0.5rem' }}>
-                    {'< wallabyだよ。投票に集中してね。'}
-                  </div>
-                }
-              </>
-            )
-          }
-        </ButtonGroup>
-        <br />
-    </>
+      <ButtonGroup size="lg" className="mb-2" style={{ height: '8rem', padding: '1rem' }}>
+        {points.map((point) => {
+          const variant = (myPoint != null && myPoint === point) ? 'dark' : 'outline-dark'
+          return (
+            <Button
+              key={point}
+              onClick={() => { onClick && onClick(point) }}
+              disabled={disabled}
+              variant={variant}
+              style={{ width: '4rem' }}>
+              {point}
+            </Button>
+          )
+        })}
+      </ButtonGroup>
   )
 }
 
-export const FibonacciCards = ({ onClick, disabled, myPoint, showWallaby }:
-   {onClick?: (p: number) => void, disabled?: boolean, myPoint?: number | null, showWallaby?: boolean}) => {
+export const FibonacciCards = ({ onClick, disabled, myPoint }:
+   {onClick?: (p: number) => void, disabled?: boolean, myPoint?: number | null}) => {
   const fibonacci = [0, 1, 2, 3, 5, 8, 13, 21]
-  return <VoteCards points={fibonacci} onClick={onClick} disabled={disabled} myPoint={myPoint} showWallaby={showWallaby}/>
+  return <VoteCards points={fibonacci} onClick={onClick} disabled={disabled} myPoint={myPoint}/>
 }
