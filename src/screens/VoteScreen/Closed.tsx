@@ -36,7 +36,7 @@ export const Closed = ({ room, user }: {room: Room, user: User}) => {
 
   return (
     <>
-      <FibonacciCards disabled myPoint={myPoint} showWallaby={true}/>
+      <FibonacciCards disabled myPoint={myPoint} />
       <p style={{ fontSize: '1.5em', marginLeft: '1rem' }}>
         {getMessage()}
       </p>
